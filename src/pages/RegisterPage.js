@@ -1,6 +1,5 @@
 import {
   Alert,
-  Button,
   IconButton,
   InputAdornment,
   Link,
@@ -8,8 +7,8 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { FCheckbox, FormProvider, FTextField } from "../components/form";
+import { useNavigate } from "react-router-dom";
+import { FormProvider, FRadioGroup, FTextField } from "../components/form";
 import useAuth from "../hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,27 +19,34 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { LoadingButton } from "@mui/lab";
 
 const LoginSchema = Yup.object().shape({
-  email: Yup.string().email().required("Email is required"),
+  name: Yup.string().required("Name is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string()
     .required("Password is required")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\-$%^&*])(?=.{8,})/,
       "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
     ),
+  passwordConfirmation: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Password Confirmation is required"),
+  role: Yup.string().required("Role is required"),
 });
 const defaultValues = {
+  name: "",
   email: "",
   password: "",
+  passwordConfirmation: "",
 };
 
 function Copyright(props) {
@@ -63,10 +69,11 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] =
+    useState(false);
   let navigate = useNavigate();
-  let location = useLocation();
   let auth = useAuth();
 
   const methods = useForm({
@@ -81,13 +88,15 @@ export default function LoginPage() {
   } = methods;
 
   const onSubmit = async (data) => {
-    const from = location.state?.from?.pathname || "/";
-    let { email, password } = data;
+    let { name, email, role, password, passwordConfirmation } = data;
+
     try {
-      await auth.login({ email, password }, () => {
-        console.log(email, password);
-        navigate(from, { replace: true });
-      });
+      await auth.register(
+        { name, email, role, password, passwordConfirmation },
+        () => {
+          navigate("/", { replace: true });
+        }
+      );
     } catch (error) {
       reset();
       console.log(error);
@@ -97,6 +106,9 @@ export default function LoginPage() {
 
   return (
     <ThemeProvider theme={theme}>
+      {!!errors.responseError && (
+        <Alert severity="error">{errors.responseError.message}</Alert>
+      )}
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid
@@ -126,21 +138,19 @@ export default function LoginPage() {
             }}
           >
             <Avatar sx={{ m: 1 }}>
-              <LockOutlinedIcon />
+              <LockOpenIcon />
             </Avatar>
 
             <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-              <Stack spacing={1} sx={{ minWidth: "350px", maxWidth: "350px" }}>
-                {!!errors.responseError && (
-                  <Alert severity="error">{errors.responseError.message}</Alert>
-                )}
+              <Stack spacing={3} sx={{ minWidth: "350px", maxWidth: "350px" }}>
                 <Stack
-                  spacing={3}
+                  spacing={2}
                   sx={{ minWidth: "350px", maxWidth: "350px" }}
                 >
                   <Typography variant="h4" textAlign="center">
-                    Sign In
+                    Sign Up
                   </Typography>
+                  <FTextField name="name" label="Name" />
                   <FTextField name="email" label="Email" />
                   <FTextField
                     name="password"
@@ -163,8 +173,36 @@ export default function LoginPage() {
                       ),
                     }}
                   />{" "}
+                  <FTextField
+                    name="passwordConfirmation"
+                    label="Password Confirmation"
+                    type={showPasswordConfirmation ? "text" : "password"}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() =>
+                              setShowPasswordConfirmation(
+                                !showPasswordConfirmation
+                              )
+                            }
+                            edge="end"
+                          >
+                            {showPasswordConfirmation ? (
+                              <VisibilityIcon />
+                            ) : (
+                              <VisibilityOffIcon />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  <FRadioGroup
+                    name="role"
+                    options={["Tenant", "Lessor"]}
+                  ></FRadioGroup>
                 </Stack>
-                <FCheckbox name="remember" label="Remember " />
 
                 <LoadingButton
                   fullWidth
@@ -173,21 +211,11 @@ export default function LoginPage() {
                   variant="contained"
                   loading={isSubmitting}
                 >
-                  Login
+                  Register
                 </LoadingButton>
-
-                <Grid container>
-                  <Grid item xs>
-                    <Typography textAlign="left" variant="body2">
-                      <Link href="/register">Forgot password</Link>
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography textAlign="right" variant="body2">
-                      Don't have account? <Link href="/register">Register</Link>
-                    </Typography>
-                  </Grid>
-                </Grid>
+                <Typography textAlign="right" variant="body2">
+                  <Link href="/login">Already have an account</Link>
+                </Typography>
 
                 <HorizontalLine />
                 <Stack justifyContent="space-evenly" direction="row">
