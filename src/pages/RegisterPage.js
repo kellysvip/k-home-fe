@@ -28,7 +28,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { LoadingButton } from "@mui/lab";
 
-const LoginSchema = Yup.object().shape({
+const RegisterSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string()
@@ -40,7 +40,6 @@ const LoginSchema = Yup.object().shape({
   passwordConfirmation: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .required("Password Confirmation is required"),
-  role: Yup.string().required("Role is required"),
 });
 const defaultValues = {
   name: "",
@@ -77,7 +76,7 @@ export default function RegisterPage() {
   let auth = useAuth();
 
   const methods = useForm({
-    resolver: yupResolver(LoginSchema),
+    resolver: yupResolver(RegisterSchema),
     defaultValues,
   });
   const {
@@ -88,11 +87,10 @@ export default function RegisterPage() {
   } = methods;
 
   const onSubmit = async (data) => {
-    let { name, email, role, password, passwordConfirmation } = data;
-
+    let { name, email, password, passwordConfirmation } = data;
     try {
       await auth.register(
-        { name, email, role, password, passwordConfirmation },
+        { name, email, password, passwordConfirmation },
         () => {
           navigate("/", { replace: true });
         }
@@ -106,11 +104,9 @@ export default function RegisterPage() {
 
   return (
     <ThemeProvider theme={theme}>
-      {!!errors.responseError && (
-        <Alert severity="error">{errors.responseError.message}</Alert>
-      )}
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
+
         <Grid
           item
           xs={false}
@@ -142,6 +138,9 @@ export default function RegisterPage() {
             </Avatar>
 
             <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+              {!!errors.responseError && (
+                <Alert severity="error">{errors.responseError.message}</Alert>
+              )}
               <Stack spacing={3} sx={{ minWidth: "350px", maxWidth: "350px" }}>
                 <Stack
                   spacing={2}
@@ -198,10 +197,6 @@ export default function RegisterPage() {
                       ),
                     }}
                   />
-                  <FRadioGroup
-                    name="role"
-                    options={["Tenant", "Lessor"]}
-                  ></FRadioGroup>
                 </Stack>
 
                 <LoadingButton
@@ -213,24 +208,24 @@ export default function RegisterPage() {
                 >
                   Register
                 </LoadingButton>
-                <Typography textAlign="right" variant="body2">
-                  <Link href="/login">Already have an account</Link>
-                </Typography>
-
-                <HorizontalLine />
-                <Stack justifyContent="space-evenly" direction="row">
-                  <IconButton color="primary" size="large">
-                    <GoogleIcon />
-                  </IconButton>
-                  <IconButton color="primary" size="large">
-                    <FacebookIcon />
-                  </IconButton>
-                  <IconButton color="primary" size="large">
-                    <InstagramIcon />
-                  </IconButton>
-                </Stack>
-                <Copyright />
               </Stack>
+              <Typography textAlign="right" variant="body2">
+                <Link href="/login">Already have an account</Link>
+              </Typography>
+
+              <HorizontalLine />
+              <Stack justifyContent="space-evenly" direction="row">
+                <IconButton color="primary" size="large">
+                  <GoogleIcon />
+                </IconButton>
+                <IconButton color="primary" size="large">
+                  <FacebookIcon />
+                </IconButton>
+                <IconButton color="primary" size="large">
+                  <InstagramIcon />
+                </IconButton>
+              </Stack>
+              <Copyright />
             </FormProvider>
           </Box>
         </Grid>

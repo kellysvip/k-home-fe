@@ -2,12 +2,12 @@ import axios from "axios";
 import { BASE_URL } from "./config";
 
 const apiService = axios.create({
-  baseURL: BASE_URL,
+  baseURL: "http://localhost:5000/api",
 });
 
 apiService.interceptors.request.use(
   (request) => {
-    console.log("Start Request", request);
+    console.log("Start Request", request );
     return request;
   },
   function (error) {
