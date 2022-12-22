@@ -5,7 +5,7 @@ import MainHeader from "./MainHeader";
 
 function MainLayout() {
   return (
-    <Stack sx={{ minHeight: "100vh" }}>
+    <Stack sx={{ minHeight: "100vh", bgcolor: "rgb(232,240,254)" }}>
       <MainHeader />
 
       <Outlet />

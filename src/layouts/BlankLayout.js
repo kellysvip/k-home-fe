@@ -12,8 +12,7 @@ const HeaderStyle = styled("header")(({ theme }) => ({
 function BlankLayout() {
   return (
     <Stack minHeight="100vh" justifyContent="center" alignItems="center">
-      <HeaderStyle>
-      </HeaderStyle>
+      <HeaderStyle/>
       <Outlet />
     </Stack>
   );
