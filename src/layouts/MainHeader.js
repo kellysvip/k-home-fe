@@ -15,7 +15,19 @@ import RoofingIcon from "@mui/icons-material/Roofing";
 import useAuth from "../hooks/useAuth";
 import LoginIcon from "@mui/icons-material/Login";
 import { useNavigate } from "react-router-dom";
+import { ThemeProvider } from "@emotion/react";
+import { createTheme } from "@mui/material";
 
+let theme = createTheme({
+  palette: {
+    primary: {
+      main: "#03a9f4",
+    },
+    secondary: {
+      main: "#f44336",
+    },
+  },
+});
 
 function MainHeader() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -43,8 +55,8 @@ function MainHeader() {
   };
 
   return (
-    <Box>
-      <AppBar position="static">
+    <ThemeProvider theme={theme}>
+      <AppBar position="static" color="primary" sx={{borderRadius: "5px",}}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <RoofingIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -126,27 +138,27 @@ function MainHeader() {
               K-HOME
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button
-                  key="Rent"
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  Rent
-                </Button>
-                <Button
-                  key="Support"
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  Support
-                </Button>
-                <Button
-                  key="Pricing"
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  Pricing
-                </Button>
+              <Button
+                key="Rent"
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                Rent
+              </Button>
+              <Button
+                key="Support"
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                Support
+              </Button>
+              <Button
+                key="Pricing"
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                Pricing
+              </Button>
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
@@ -190,7 +202,7 @@ function MainHeader() {
                 onClose={handleCloseUserMenu}
               >
                 <MenuItem key="Profile" onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">Profile</Typography>
+                  <Typography sx={{color:"secondary"}} textAlign="center">Profile</Typography>
                 </MenuItem>
                 <MenuItem key="Account" onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">Account</Typography>
@@ -206,7 +218,7 @@ function MainHeader() {
           </Toolbar>
         </Container>
       </AppBar>
-    </Box>
+    </ThemeProvider>
   );
 }
 

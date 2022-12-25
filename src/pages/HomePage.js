@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
-import useAuth from "../hooks/useAuth";
-import { Link, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
 import {
   Alert,
   Box,
-  Breadcrumbs,
   Container,
   createTheme,
-  CssBaseline,
-  Grid,
-  Stack,
-  Typography,
+  Stack
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { useForm } from "react-hook-form";
@@ -22,15 +16,17 @@ import ProductSort from "../components/product/ProductSort";
 import ProductList from "../components/product/ProductList";
 import LoadingScreen from "../components/LoadingScreen";
 import { orderBy } from "lodash";
+import { blue } from "@mui/material/colors";
 
 const theme = createTheme();
+
+
 function HomePage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0);
+  // const [page, setPage] = useState(0);
   const [error, setError] = useState("");
 
-  const auth = useAuth();
 
   const defaultValues = {
     type: [],
@@ -54,29 +50,32 @@ function HomePage() {
         // const res = await apiService.get("/data");
         setProducts([
           {
-            id: "e2d94bbf-0530-425a-a1ed-3177c5822c4e",
-            title: " Căn Hộ MiNi full nội thất ngay Đại Học Ngân Hàng ",
-            price: "4.5 triệu/tháng",
-            squareInArea: "25m²",
-            location: "Quận Thủ Đức, Hồ Chí Minh",
-            postTime: "08/10/2022",
-            postSummary:
-              "️ Giá thuê : 4,5tr . 5tr ️ Địa chỉ : 68 đường số 9 , phường Linh Trung , Quận Thủ Đức .Nhà ngay Trung Tâm Thủ Đức , gần trường ĐH Ngân Hàng , ĐH Sư…",
-            imageLink:
-              "https://pt123.cdn.static123.com/images/thumbs/450x300/fit/2022/10/08/received-5400905793259001_1665218113.jpg",
-          },
-          {
-            id: "166cfa39-4310-46c4-9f18-20a458e4e412",
+            id: "639d71a6158f11fe11a4626c",
+            author: "639c1da222cb24eca949b6ad",
             title:
               " Cho thuê chung cư mini trung tâm SG, khu an ninh, có sân vườn thoáng mát, giá chỉ … ",
-            price: "2.2 triệu/tháng",
-            squareInArea: "32m²",
-            location: "Quận Thủ Đức, Hồ Chí Minh",
-            postTime: "05/10/2022",
-            postSummary:
-              "Vị trí: Số 16/2 Đường số 44, Phường Hiệp Bình Chánh, Quận Thủ Đức (gần Chợ Hiệp Bình)Thuộc khu vực trung tâm Thành phố Sài Gòn, với Đại lộ…",
-            imageLink:
+            imageUrl:
               "https://pt123.cdn.static123.com/images/thumbs/450x300/fit/2022/10/05/20191027-112111-01_1664982032.jpg",
+            address: "Quận Thủ Đức, Hồ Chí Minh",
+            price: 2.2,
+            noBedroom: 5,
+            noBathroom: 3,
+            description:
+              "Vị trí: Số 16/2 Đường số 44, Phường Hiệp Bình Chánh, Quận Thủ Đức (gần Chợ Hiệp Bình)Thuộc khu vực trung tâm Thành phố Sài Gòn, với Đại lộ…",
+            area: "32",
+            status: "available",
+            isDelete: false,
+            createdAt: {
+              $date: {
+                $numberLong: "1671262630930",
+              },
+            },
+            updatedAt: {
+              $date: {
+                $numberLong: "1671262630930",
+              },
+            },
+            __v: 0,
           },
         ]);
         setError("");

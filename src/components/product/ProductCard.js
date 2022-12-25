@@ -5,10 +5,12 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { convertDate } from "../../utils/timeFormat";
 
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
+;
   return (
     <Card
       sx={{ border: "1px solid #657786", width: "900px", maxHeight: "227px" }}
@@ -18,7 +20,7 @@ function ProductCard({ product }) {
         <Stack flex="0" direction="row">
           <CardMedia
             component="img"
-            image={product.imageLink}
+            image={product.imageUrl}
             alt="cHomePic"
             sx={{position:'relative',top:'-13px', width: "250px",  height: "240px",minWidth: "250px" }}
           />
@@ -36,19 +38,19 @@ function ProductCard({ product }) {
                 variant="subtitle1"
                 sx={{ color: "#657786", overflow: "hidden" }}
               >
-                {product.location} 
+                {product.address} 
               </Typography>
               <Typography variant="subtitle2">
-                {product.squareInArea}
+                {product.area}m2
               </Typography>
               <Typography
                 variant="subtitle1"
                 sx={{ color: "#0499a8", fontWeight: "700", fontSize: "20px" }}
               >
-                {product.price}
+                {product.price} Triệu
               </Typography>
 
-              <Typography variant="subtitle1">{product.postTime}</Typography>
+              <Typography variant="subtitle1">{convertDate(Date(product.updatedAt.$date.$numberLong))}</Typography>
             </Stack>
           </CardContent>
         </Stack>
