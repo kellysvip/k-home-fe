@@ -59,6 +59,7 @@ export const updateUserProfile =
     try {
       const data = {
         name,
+        avatarUrl,
         phoneNumber,
         password,
         aboutMe,
@@ -66,7 +67,6 @@ export const updateUserProfile =
         facebookLink,
         instagramLink,
       };
-
       if (avatarUrl instanceof File) {
         const imageUrl = await cloudinaryUpload(avatarUrl);
         data.avatarUrl = imageUrl;

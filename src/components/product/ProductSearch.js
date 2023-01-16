@@ -5,10 +5,10 @@ import { FTextField } from "../form";
 
 function ProductSearch() {
   return (
-    <Paper elevation={10}>
+    <Paper elevation={2}>
       <FTextField
         name="searchQuery"
-        sx={{ width: 300 }}
+        sx={{ minWidth: 300 }}
         size="small"
         InputProps={{
           startAdornment: (

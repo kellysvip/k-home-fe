@@ -1,7 +1,9 @@
+import Cookies from "js-cookie";
 import { createContext, useReducer, useEffect } from "react";
 import { useSelector } from "react-redux";
 import apiService from "../app/apiService";
 import { isValidToken } from "../utils/jwt";
+
 
 const initialState = {
   isInitialized: false,
@@ -38,6 +40,7 @@ const reducer = (state, action) => {
       };
     case INITIALIZE:
       const { isAuthenticated, user } = action.payload;
+
       return {
         ...state,
         isInitialized: true,
@@ -46,7 +49,8 @@ const reducer = (state, action) => {
       };
     case UPDATE_PROFILE:
       const {
-        name, phoneNumber,
+        name,
+        phoneNumber,
         avatarUrl,
         aboutMe,
         jobTitle,
@@ -58,7 +62,8 @@ const reducer = (state, action) => {
         ...state,
         user: {
           ...state.user,
-          name, phoneNumber,
+          name,
+          phoneNumber,
           avatarUrl,
           aboutMe,
           jobTitle,
@@ -77,10 +82,10 @@ const AuthContext = createContext({ ...initialState });
 
 const setSession = (accessToken) => {
   if (accessToken) {
-    window.localStorage.setItem("accessToken", accessToken);
-    apiService.defaults.headers.common.Authorization = `Bearer ${accessToken}`; // protocol jwt
+    Cookies.set('accessToken', accessToken)
+    apiService.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
   } else {
-    window.localStorage.removeItem("accessToken");
+    Cookies.remove('accessToken')
     delete apiService.defaults.headers.common.Authorization;
   }
 };
@@ -92,15 +97,14 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const initialize = async () => {
       try {
-        const accessToken = window.localStorage.getItem("accessToken");
+        const accessToken = Cookies.get("accessToken");
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
           const res = await apiService.get("/users/me");
-          const user = res.data.data;
-
+          const {user} = res.data.data;
           dispatch({
             type: INITIALIZE,
-            payload: { isAuthenticated: true, user },
+            payload: { isAuthenticated: true,  user },
           });
         } else {
           dispatch({
@@ -121,6 +125,7 @@ export function AuthProvider({ children }) {
 
   const login = async ({ email, password }, callback) => {
     const res = await apiService.post("/auth/login", { email, password });
+
     const { user, accessToken } = res.data.data;
     setSession(accessToken);
     dispatch({

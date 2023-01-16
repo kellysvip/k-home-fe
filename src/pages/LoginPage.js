@@ -1,6 +1,5 @@
 import {
   Alert,
-  Button,
   IconButton,
   InputAdornment,
   Link,
@@ -83,9 +82,9 @@ export default function LoginPage() {
   const onSubmit = async (data) => {
     const from = location.state?.from?.pathname || "/";
     let { email, password } = data;
+    
     try {
       await auth.login({ email, password }, () => {
-        console.log(email, password);
         navigate(from, { replace: true });
       });
     } catch (error) {
