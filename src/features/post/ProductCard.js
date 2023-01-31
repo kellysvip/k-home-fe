@@ -21,7 +21,23 @@ import { Box } from "@mui/system";
 import ChangeProductModal from "./ChangeProductModal";
 import { useDispatch } from "react-redux";
 import { deletePost } from "./postSlice";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { green, red, yellow } from "@mui/material/colors";
+import useWindowSize from "../../hooks/useWindowSize";
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: green[500],
+    },
+    secondary: {
+      main: yellow[500],
+    },
+    third: {
+      main: red[500],
+    },
+  },
+});
 const style = {
   position: "absolute",
   top: "50%",
@@ -38,6 +54,7 @@ const style = {
 
 function ProductCard({ product }) {
   const { user } = useAuth();
+  const size = useWindowSize();
   const postId = product._id;
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -56,7 +73,7 @@ function ProductCard({ product }) {
     setAnchorEl(null);
   };
   const handleDeletePost = () => {
-    dispatch(deletePost({postId}));
+    dispatch(deletePost({ postId }));
     handleClose();
   };
 
@@ -123,75 +140,132 @@ function ProductCard({ product }) {
     </Modal>
   );
   return (
-    <Card sx={{ maxHeight: "227px", flexGrow: 1 }}>
-      <CardActionArea>
-        <Stack direction="row">
-          <CardMedia
-            component="img"
-            image={product.imageUrl}
-            alt="cHomePic"
-            onClick={() => navigate(`/product/${product._id}`)}
-            sx={{
-              position: "relative",
-              top: "-13px",
-              width: { xs: "150px", md: "250px", borderRadius: "5px" },
-              height: "240px",
-              maxWidth: "250px",
-            }}
-          />
-          <CardContent>
-            <Stack flexDirection="row" sx={{ justifyContent: "space-between" }}>
-              <Typography
-                gutterBottom
-                variant="h4"
-                component="div"
-                onClick={() => navigate(`/product/${product._id}`)}
-                sx={{ height: "80px", overflow: "hidden" }}
-              >
-                {product.title}
-              </Typography>
-              {user._id === product.author && (
-                <IconButton
-                  onClick={handleOpenMenu}
-                  sx={{ height: "50px", top: "-5px" }}
-                >
-                  <MoreVertIcon fontSize="large" />
-                </IconButton>
-              )}
-              {renderMenu}
-            </Stack>
-            <Stack
-              direction="column"
-              spacing={0}
-              justifyContent="flex-start"
+    <ThemeProvider theme={theme}>
+      <Card sx={{ maxHeight: "227px", flexGrow: 1 }}>
+        <CardActionArea>
+          <Stack direction="row">
+            <CardMedia
+              component="img"
+              image={product.imageUrl}
+              alt="kHomePic"
               onClick={() => navigate(`/product/${product._id}`)}
-            >
-              <Typography
-                variant="subtitle1"
-                sx={{ color: "#657786", overflow: "hidden" }}
+              sx={{
+                position: "relative",
+                top: "-13px",
+                width: { xs: "150px", md: "250px", borderRadius: "5px" },
+                height: "240px",
+                maxWidth: "250px",
+              }}
+            />
+            <CardContent>
+              <Stack
+                flexDirection="row"
+                sx={{ justifyContent: "space-between" }}
               >
-                {product.address}
-              </Typography>
-              <Typography variant="subtitle2">
-                {product.area}m2 {product.noBedroom} PN {product.noBathroom} WC
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                sx={{ color: "#0499a8", fontWeight: "700", fontSize: "20px" }}
+                <Typography
+                  gutterBottom
+                  variant="h4"
+                  component="div"
+                  onClick={() => navigate(`/product/${product._id}`)}
+                  sx={{
+                    display: "-webkit-box",
+                    overflow: "hidden",
+                    WebkitBoxOrient: "vertical",
+                    WebkitLineClamp: 2,
+                  }}
+                >
+                  {product.title}
+                </Typography>
+                {user._id === product.author && (
+                  <IconButton
+                    onClick={handleOpenMenu}
+                    sx={{ height: "50px", top: "-5px" }}
+                  >
+                    <MoreVertIcon fontSize="large" />
+                  </IconButton>
+                )}
+                {renderMenu}
+              </Stack>
+              <Stack
+                direction="column"
+                spacing={0}
+                justifyContent="flex-start"
+                onClick={() => navigate(`/product/${product._id}`)}
               >
-                {product.price} Triệu
-              </Typography>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ color: "#657786", overflow: "hidden" }}
+                >
+                  {product.address}
+                </Typography>
+                <Typography variant="subtitle2">
+                  {product.area}m2 {product.noBedroom} PN {product.noBathroom}{" "}
+                  WC
+                </Typography>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ color: "#0499a8", fontWeight: "700", fontSize: "20px" }}
+                >
+                  {product.price} Triệu
+                </Typography>
 
-              <Typography variant="subtitle1">
-                {product?.updatedAt?.slice(0, 10)}
-              </Typography>
-            </Stack>
-          </CardContent>
-        </Stack>
-      </CardActionArea>
-      {renderModalDelete}
-      {renderModalChange}
-    </Card>
+                <Stack flexDirection="row">
+                  <Typography variant="subtitle1">
+                    {product?.updatedAt?.slice(0, 10)}
+                  </Typography>
+                  {product.status === "available"
+                    ? size.width >= 430 && (
+                        <Button
+                          variant="contained"
+                          sx={{
+                            padding: 0,
+                            paddingX: "8px",
+                            ml: 3,
+                            backgroundColor: "primary.main",
+                            fontSize: "13px",
+                          }}
+                        >
+                          Available
+                        </Button>
+                      )
+                    : product.status === "reserve"
+                    ? size.width >= 430 && (
+                        <Button
+                          variant="contained"
+                          sx={{
+                            padding: 0,
+                            paddingX: "8px",
+                            ml: 3,
+                            backgroundColor: "secondary.main",
+                            fontSize: "13px",
+                          }}
+                        >
+                          Reserve
+                        </Button>
+                      )
+                    : size.width >= 430 && (
+                        <Button
+                          variant="contained"
+                          sx={{
+                            padding: 0,
+                            paddingX: "8px",
+                            ml: 3,
+                            backgroundColor: "third.main",
+                            fontSize: "13px",
+                          }}
+                        >
+                          Rented
+                        </Button>
+                      )}
+                </Stack>
+              </Stack>
+            </CardContent>
+          </Stack>
+        </CardActionArea>
+        {renderModalDelete}
+        {renderModalChange}
+      </Card>
+    </ThemeProvider>
   );
 }
 

@@ -1,57 +1,51 @@
 import React from "react";
-import GoogleMapReact from 'google-map-react';
+import GoogleMapReact from "google-map-react";
 import Geocode from "react-geocode";
+import { useState } from "react";
+import { useRef } from "react";
 Geocode.setLanguage("en");
 Geocode.setLocationType("ROOFTOP");
 Geocode.enableDebug();
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
-export default function SimpleMap(){
+export default function SimpleMap({position}) {
+  const [latitude, setLatitude] = useState();
+  const [longitude, setLongitude] = useState();
 
-//     let latitude, longitude;
-//   Geocode.setLanguage("en");
-//   Geocode.setLocationType("ROOFTOP");
-//   Geocode.enableDebug();
-//   Geocode.fromAddress("14 Phan Van Tri, Go Vap").then(
-//     (response) => {
-//       const { lat, lng } = response.results[0].geometry.location;
-//       latitude = lat;
-//       longitude = lng;
-//       console.log(lat, lng);
-//     },
-//     (error) => {
-//       console.error(error);
-//     }
-//   );
-//   const defaultProps = {
-//     center: {
-//       lat: latitude,
-//       lng: longitude,
-//     },
-//     zoom: 11,
-//   };
+  Geocode.setApiKey("AIzaSyB7k9PV0bxEXkF2WdtcOxA2AQJ139IeGY4");
+  Geocode.setLanguage("en");
+  Geocode.setLocationType("ROOFTOP");
+  Geocode.enableDebug();
+  Geocode.fromAddress(position).then(
+    (response) => {
+      const { lat, lng } = response.results[0].geometry.location;
+      setLatitude(lat);
+      setLongitude(lng);
+    },
+    (error) => {
+      // console.error(error);
+    }
+  );
+ 
+
   const defaultProps = {
     center: {
-      lat: 10.822930,
-      lng: 106.690680
+      lat: latitude || 10.8305256,
+      lng: longitude || 106.681947,
     },
-    zoom: 11
+    zoom: 12,
   };
-
+  console.log("defaultProps", defaultProps);
   return (
-    <div style={{ height: '40vh', width: '100%' }}>
+    <div style={{ height: "40vh", width: "100%" }}>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "" }}
+        bootstrapURLKeys={{ key: "AIzaSyB7k9PV0bxEXkF2WdtcOxA2AQJ139IeGY4" }}
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
         yesIWantToUseGoogleMapApiInternals
       >
-        <AnyReactComponent
-          lat={59.955413}
-          lng={30.337844}
-          text="My Marker"
-        />
+        <AnyReactComponent lat={latitude} lng={longitude} text="My Marker" />
       </GoogleMapReact>
     </div>
   );

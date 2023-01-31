@@ -121,21 +121,19 @@ function AccountGeneral() {
               <FTextField name="address" label="Address" />
             </Box>
 
-            <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
+            <Stack spacing={3} alignItems="flex-start" sx={{ mt: 3 }}>
               <FTextField name="aboutMe" multiline rows={4} label="About Me" />
 
               <LoadingButton
                 type="submit"
                 variant="contained"
-                sx={{ backgroundColor: "#0499a8" }}
+                sx={{ backgroundColor: "#0499a8", alignSelf: "flex-end" }}
                 loading={isSubmitting || isLoading}
               >
                 Save Changes
               </LoadingButton>
               <Box
                 sx={{
-                  position: "relative",
-                  height: 1,
                   borderTop: "1px solid #111",
                   paddingTop: 1,
                 }}

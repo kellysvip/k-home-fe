@@ -21,10 +21,8 @@ const postSchema = Yup.object().shape({
   title: Yup.string(),
   address: Yup.string(),
   price: Yup.number().min(0, "Min value 0."),
-  noBedroom: Yup.number()
-  .min(0, "Min value 0."),
-  noBathroom: Yup.number()
-  .min(0, "Min value 0."),
+  noBedroom: Yup.number().min(0, "Min value 0."),
+  noBathroom: Yup.number().min(0, "Min value 0."),
   area: Yup.number().min(0, "Min value 0."),
   description: Yup.string(),
 });
@@ -41,33 +39,40 @@ const style = {
 };
 
 const addressList = [
-  { value: "district1", label: "District 1" },
-  { value: "district2", label: "District 2" },
-  { value: "district3", label: "District 3" },
-  { value: "district4", label: "District 4" },
-  { value: "district5", label: "District 5" },
-  { value: "district6", label: "District 6" },
-  { value: "district7", label: "District 7" },
-  { value: "district8", label: "District 8" },
-  { value: "district9", label: "District 9" },
-  { value: "district10", label: "District 10" },
-  { value: "district11", label: "District 11" },
-  { value: "district12", label: "District 12" },
-  { value: "btdistrict", label: "Binh Tan District" },
-  { value: "bthanhdistrict", label: "Binh Thanh District" },
-  { value: "gvdistrict", label: "Go Vap District" },
-  { value: "pndistrict", label: "Phu Nhuan District" },
-  { value: "tbdistrict", label: "Tan Binh District" },
-  { value: "tpdistrict", label: "Tan Phu District" },
-  { value: "tdcity", label: "Thu Duc City" },
+  { value: "District 1", label: "District 1" },
+  { value: "District 2", label: "District 2" },
+  { value: "District 3", label: "District 3" },
+  { value: "District 4", label: "District 4" },
+  { value: "District 5", label: "District 5" },
+  { value: "District 6", label: "District 6" },
+  { value: "District 7", label: "District 7" },
+  { value: "District 8", label: "District 8" },
+  { value: "District 9", label: "District 9" },
+  { value: "District 10", label: "District 10" },
+  { value: "District 11", label: "District 11" },
+  { value: "District 12", label: "District 12" },
+  { value: "Binh Tan District", label: "Binh Tan District" },
+  { value: "Binh Thanh District", label: "Binh Thanh District" },
+  { value: "Go Vap District", label: "Go Vap District" },
+  { value: "Phu Nhuan District", label: "Phu Nhuan District" },
+  { value: "Tan Binh District", label: "Tan Binh District" },
+  { value: "Tan Phu District", label: "Tan Phu District" },
+  { value: "Thu Duc City", label: "Thu Duc City" },
+];
+
+const statusList = [
+  { value: "available", label: "Available" },
+  { value: "reserve", label: "Reserve" },
+  { value: "rented", label: "Rented" },
 ];
 
 export default function ChangeProductModal({ product }) {
   const dispatch = useDispatch();
-  const productId = product._id
+  const productId = product._id;
   const defaultValues = {
     title: product?.title || "",
     image: product?.imageUrl || "",
+    status: product?.status || "",
     address: product?.address || "",
     price: product?.price || "",
     noBedroom: product?.noBedroom || "",
@@ -86,6 +91,7 @@ export default function ChangeProductModal({ product }) {
 
   const onSubmitChangePost = async (data) => {
     try {
+      console.log('dataa', data);
       dispatch(changePost(productId, data));
     } catch (error) {
       reset();
@@ -117,7 +123,7 @@ export default function ChangeProductModal({ product }) {
         methods={methods}
         onSubmit={handleSubmit(onSubmitChangePost)}
       >
-        {/* <FTextField name="title" label="Title" /> */}
+        <FTextField name="title" label="Title" />
         <Stack sx={{ mt: 1, flexDirection: { md: "row", sm: "column" } }}>
           <Stack spacing={0.5} sx={{ mr: 3, minWidth: "300px" }}>
             <FUploadImage
@@ -141,6 +147,13 @@ export default function ChangeProductModal({ product }) {
                 </Typography>
               }
             />
+            <FSelect name="status" label="Status">
+              {statusList.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </FSelect>
           </Stack>
           <Stack spacing={1}>
             <FSelect name="address" label="Address">
@@ -186,7 +199,7 @@ export default function ChangeProductModal({ product }) {
             size="small"
             loading={isSubmitting}
           >
-            post
+            update
           </LoadingButton>
         </Box>
       </FormProvider>

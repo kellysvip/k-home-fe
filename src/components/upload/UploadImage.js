@@ -27,7 +27,7 @@ function UploadImage({ error , file, helperText, sx, ...other }) {
     isDragReject,
     fileRejections,
   } = useDropzone({
-    multiple: false,
+    multiple: true,
     ...other,
   });
 

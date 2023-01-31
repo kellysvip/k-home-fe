@@ -5,13 +5,13 @@ import LoadingScreen from "../components/LoadingScreen";
 function AuthRequire({ children }) {
   const { isAuthenticated, isInitialized } = useAuth();
   const location = useLocation();
-
+  
   if (!isInitialized) {
     return <LoadingScreen />;
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/landingpage" state={{ from: location }} replace />;
   }
 
   return children;

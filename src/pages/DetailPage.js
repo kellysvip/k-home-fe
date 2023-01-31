@@ -15,36 +15,25 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import apiService from "../app/apiService";
 import SimpleMap from "../components/Map";
+import MessengerForm from "../components/messenger/MessengerForm";
+import { getSinglePost } from "../features/post/postSlice";
+// import PostSlider from "../features/post/PostSlider";
 import UserInfoCard from "../features/users/UserInfoCard";
-import useWindowSize from '../hooks/useWindowSize'
+import useWindowSize from "../hooks/useWindowSize";
 const theme = createTheme();
 
 function DetailPage() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0);
-  const [error, setError] = useState("");
   const { _id } = useParams();
-  const size = useWindowSize();  
-  console.log('size', size.width);
+  const size = useWindowSize();
+  const dispatch = useDispatch();
+  const { products } = useSelector((state) => state.post);
   useEffect(() => {
-    const getProducts = async () => {
-      setLoading(true);
-      try {
-          const res = await apiService.get(`/posts/${_id}`);
-        setProducts(res.data.data.post);
-        setError("");
-      } catch (error) {
-        console.log(error);
-        setError(error.message);
-      }
-      setLoading(false);
-    };
-    getProducts();
-  }, [_id]);
+    dispatch(getSinglePost({ _id }));
+  }, [_id, dispatch]);
   return (
     <ThemeProvider theme={theme}>
       <Container
@@ -62,7 +51,7 @@ function DetailPage() {
             <Box sx={{ position: "relative" }}>
               <CardMedia
                 component="img"
-                image={products.imageUrl}
+                image={products?.imageUrl}
                 alt="cHomePic"
                 sx={{ position: "relative", minWidth: { md: "700px" } }}
               />
@@ -74,18 +63,18 @@ function DetailPage() {
                 component="div"
                 sx={{ overflowY: "hidden", fontWeight: "bold" }}
               >
-                {products.title}
+                {products?.title}
               </Typography>
               <Typography
                 variant="subtitle1"
                 sx={{ color: "#657786", overflow: "hidden" }}
               >
-                {products.address}
+                {products?.address}
               </Typography>
               <Typography
                 sx={{ color: "#0499a8", fontWeight: "700", fontSize: "38px" }}
               >
-                {products.price} Triệu
+                {products?.price} Triệu
               </Typography>
             </Box>
             <Box sx={{ position: "relative", mt: 3 }}>
@@ -114,14 +103,18 @@ function DetailPage() {
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell component="th" scope="row" align="center">
-                        {products.status}
+                        {products?.status}
                       </TableCell>
-                      <TableCell align="center">{products.updatedAt}</TableCell>
-                      <TableCell align="center">{products.area}</TableCell>
-
-                      <TableCell align="center">{products.noBedroom}</TableCell>
                       <TableCell align="center">
-                        {products.noBathroom}
+                        {products?.updatedAt}
+                      </TableCell>
+                      <TableCell align="center">{products?.area}</TableCell>
+
+                      <TableCell align="center">
+                        {products?.noBedroom}
+                      </TableCell>
+                      <TableCell align="center">
+                        {products?.noBathroom}
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -134,13 +127,21 @@ function DetailPage() {
               >
                 Description
               </Typography>
-              <Typography sx={{mt: "2px", mb: 2}}>{products.description}</Typography>
-              <SimpleMap />
-              {size.width < 900 &&  <UserInfoCard  profile={products.author}/>}
-            </Box>
+              <Typography sx={{ mt: "2px", mb: 2 }}>
+                {products?.description}
+              </Typography>
+              <SimpleMap position={products?.address} />
+              {size.width < 900 && <UserInfoCard profile={products?.author} />}
+            </Box>{" "}
+            {/* <PostSlider /> */}
           </Stack>
         </Paper>
-        {size.width >= 900 &&  <UserInfoCard  profile={products.author}/>}
+
+        {size.width >= 900 && (
+          <div>
+            <UserInfoCard profile={products?.author} />
+          </div>
+        )}
       </Container>
     </ThemeProvider>
   );

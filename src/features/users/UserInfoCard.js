@@ -11,26 +11,44 @@ import {
   ToggleButton,
   Button,
 } from "@mui/material";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import FacebookIcon from "@mui/icons-material/Facebook";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
-import React from "react";
+import React, { useState } from "react";
+import { createConversation } from "../conversation/conversationSlice";
+import useAuth from "../../hooks/useAuth";
+import { useDispatch } from "react-redux";
+import MessengerForm from "../../components/messenger/MessengerForm";
 
 function UserInfoCard({ profile }) {
   const [bookmark, setBookmark] = React.useState(false);
-  console.log("profile", profile);
+  const [conv, setConv] = useState(false);
+  const dispatch = useDispatch();
+  const { user } = useAuth();
+  const userId = user._id;
+  const handleCreateConversation = () => {
+    conv ? setConv(false) : setConv(true);
+    try {
+      let members = {
+        senderId: userId,
+        receiverId: profile._id,
+      };
+      if (userId && profile._id) {
+        dispatch(createConversation({ members }));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <Stack
-      direction="column"
-    >
+    <Stack direction="column">
       <Paper
         elevation={10}
         sx={{
           display: "flex",
           flexDirection: "column",
-          height: "40vh",
-          minWidth: {md: "50vh"},
+          minWidth: { md: "50vh" },
+          mt: { md: 0, sm: 2, xs: 2 },
         }}
       >
         <Stack
@@ -85,6 +103,7 @@ function UserInfoCard({ profile }) {
           </Button>
         </Box>
         <Button
+          onClick={handleCreateConversation}
           sx={{
             display: "flex",
             flexDirection: "row",
@@ -97,9 +116,10 @@ function UserInfoCard({ profile }) {
             mt: 1,
             ml: 2,
             mr: 2,
+            mb: 3
           }}
         >
-          Chat Now
+          {conv ? "Quit Chat" : "Chat Now"}
         </Button>
       </Paper>
 
@@ -139,6 +159,11 @@ function UserInfoCard({ profile }) {
           />
         </Box>
       </Box>
+      {conv && (
+        <Paper sx={{ minHeight: "40vh", mt: 1 }}>
+          <MessengerForm />
+        </Paper>
+      )}
     </Stack>
   );
 }

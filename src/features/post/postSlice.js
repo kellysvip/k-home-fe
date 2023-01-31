@@ -56,6 +56,13 @@ const slice = createSlice({
       });
       state.totalPosts = count;
     },
+    getSinglePost(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const { post } = action.payload;
+      state.products = post;
+      
+    },
 
     sendPostReactionSuccess(state, action) {
       state.isLoading = false;
@@ -80,6 +87,7 @@ export const createPost =
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
+      console.log(image);
       const imageUrl = await cloudinaryUpload(image);
       const res = await apiService.post("/posts", {
         title,
@@ -91,7 +99,7 @@ export const createPost =
         description,
         imageUrl: imageUrl,
         status: "available",
-        isDelete: false,
+        isDeleted: false,
       });
       dispatch(slice.actions.createPostSuccess(res.data));
     } catch (error) {
@@ -116,7 +124,17 @@ export const deletePost =
 export const changePost =
   (
     postId,
-    { title, image, address, price, noBedroom, noBathroom, area, description }
+    {
+      title,
+      image,
+      status,
+      address,
+      price,
+      noBedroom,
+      noBathroom,
+      area,
+      description,
+    }
   ) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
@@ -125,6 +143,7 @@ export const changePost =
       const res = await apiService.put(`/posts/${postId}`, {
         title,
         imageUrl: imageUrl,
+        status,
         address,
         price,
         noBedroom,
@@ -151,6 +170,20 @@ export const getPosts =
       const response = await apiService.get(url);
       if (page === 1) dispatch(slice.actions.resetPosts());
       dispatch(slice.actions.getPostSuccess(response.data.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
+export const getSinglePost =
+  ({ _id }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      let url = `/posts/${_id}`;
+      const response = await apiService.get(url);
+      dispatch(slice.actions.getSinglePost(response.data.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);

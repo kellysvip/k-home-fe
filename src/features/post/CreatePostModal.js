@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { createPost } from "./postSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { fData } from "../../utils/numberFormat";
+import { useState } from "react";
 
 const postSchema = Yup.object().shape({
   title: Yup.string().required("Content is required"),
@@ -43,32 +44,37 @@ const style = {
 };
 
 const addressList = [
-  { value: "district1", label: "District 1" },
-  { value: "district2", label: "District 2" },
-  { value: "district3", label: "District 3" },
-  { value: "district4", label: "District 4" },
-  { value: "district5", label: "District 5" },
-  { value: "district6", label: "District 6" },
-  { value: "district7", label: "District 7" },
-  { value: "district8", label: "District 8" },
-  { value: "district9", label: "District 9" },
-  { value: "district10", label: "District 10" },
-  { value: "district11", label: "District 11" },
-  { value: "district12", label: "District 12" },
-  { value: "btdistrict", label: "Binh Tan District" },
-  { value: "bthanhdistrict", label: "Binh Thanh District" },
-  { value: "gvdistrict", label: "Go Vap District" },
-  { value: "pndistrict", label: "Phu Nhuan District" },
-  { value: "tbdistrict", label: "Tan Binh District" },
-  { value: "tpdistrict", label: "Tan Phu District" },
-  { value: "tdcity", label: "Thu Duc City" },
+  { value: "District 1", label: "District 1" },
+  { value: "District 2", label: "District 2" },
+  { value: "District 3", label: "District 3" },
+  { value: "District 4", label: "District 4" },
+  { value: "District 5", label: "District 5" },
+  { value: "District 6", label: "District 6" },
+  { value: "District 7", label: "District 7" },
+  { value: "District 8", label: "District 8" },
+  { value: "District 9", label: "District 9" },
+  { value: "District 10", label: "District 10" },
+  { value: "District 11", label: "District 11" },
+  { value: "District 12", label: "District 12" },
+  { value: "Binh Tan District", label: "Binh Tan District" },
+  { value: "Binh Thanh District", label: "Binh Thanh District" },
+  { value: "Go Vap District", label: "Go Vap District" },
+  { value: "Phu Nhuan District", label: "Phu Nhuan District" },
+  { value: "Tan Binh District", label: "Tan Binh District" },
+  { value: "Tan Phu District", label: "Tan Phu District" },
+  { value: "Thu Duc City", label: "Thu Duc City" },
 ];
 
 export default function BasicModal({ open, setOpen }) {
+  const [image, setImage] = useState()
   const dispatch = useDispatch();
   const handleClose = () => setOpen(false);
-
-  const methods = useForm({ resolver: yupResolver(postSchema) });
+  const defaultValues = {
+    title: "",
+    address: "district1",
+    description: "",
+  };
+  const methods = useForm({ resolver: yupResolver(postSchema), defaultValues });
   const {
     handleSubmit,
     setValue,
@@ -78,7 +84,11 @@ export default function BasicModal({ open, setOpen }) {
   } = methods;
 
   const onSubmit = async (data) => {
+    console.log("data image 1", data.image);
     try {
+      data.image = image
+    console.log("data image 2", data.image);
+
       dispatch(createPost(data)).then(() => reset());
     } catch (error) {
       reset();
@@ -88,15 +98,28 @@ export default function BasicModal({ open, setOpen }) {
   };
   const handleDrop = useCallback(
     (acceptedFiles) => {
+      // console.log("acceptedFiles", acceptedFiles);
+      // const file = acceptedFiles[0];
+      // console.log(file);
+      // if (file) {
+      //   setValue(
+      //     "image",
+      //     Object.assign(file, { preview: URL.createObjectURL(file) })
+      //   );
+      // }
+
       console.log("acceptedFiles", acceptedFiles);
-      const file = acceptedFiles[0];
-      console.log(file);
-      if (file) {
-        setValue(
-          "image",
-          Object.assign(file, { preview: URL.createObjectURL(file) })
+      let files = [];
+      acceptedFiles.forEach((file, index) => {
+        files.push(
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
         );
-      }
+      });
+      console.log(files);
+      if (files) setValue("image", ...files);
+      setImage(files)
     },
     [setValue]
   );
@@ -104,7 +127,8 @@ export default function BasicModal({ open, setOpen }) {
   return (
     <Modal
       open={open}
-      onClose={handleClose}s
+      onClose={handleClose}
+      s
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >

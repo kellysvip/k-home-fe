@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import apiService from "../../app/apiService";
 import { cloudinaryUpload } from "../../utils/cloudinary";
+import { cloudinaryUploadAvatar } from "../../utils/cloudinaryAvt";
 
 const initialState = {
   isLoading: false,
@@ -37,6 +38,12 @@ const slice = createSlice({
 
       state.selectedUser = action.payload;
     },
+    getAllUsersSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const allUsers = action.payload;
+      state.allUsers = allUsers
+    },
   },
 });
 
@@ -68,7 +75,7 @@ export const updateUserProfile =
         instagramLink,
       };
       if (avatarUrl instanceof File) {
-        const imageUrl = await cloudinaryUpload(avatarUrl);
+        const imageUrl = await cloudinaryUploadAvatar(avatarUrl);
         data.avatarUrl = imageUrl;
       }
       const response = await apiService.put(`/users/${userId}`, data);
@@ -91,11 +98,11 @@ export const getUser = (id) => async (dispatch) => {
   }
 };
 
-export const getCurrentUserProfile = () => async (dispatch) => {
+export const getAllUsers = () => async (dispatch) => {
   dispatch(slice.actions.startLoading());
   try {
-    const response = await apiService.get("/users/me");
-    dispatch(slice.actions.updateUserProfileSuccess(response.data));
+    const response = await apiService.get("/users/all");
+    dispatch(slice.actions.getAllUsersSuccess(response.data));
   } catch (error) {
     dispatch(slice.actions.hasError(error));
   }

@@ -14,12 +14,11 @@ import MenuItem from "@mui/material/MenuItem";
 import RoofingIcon from "@mui/icons-material/Roofing";
 import useAuth from "../hooks/useAuth";
 import LoginIcon from "@mui/icons-material/Login";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme, Modal } from "@mui/material";
-import CreatePostModal from "../features/post/CreatePostModal"
+import CreatePostModal from "../features/post/CreatePostModal";
 import { Link as RouterLink } from "react-router-dom";
-
 
 let theme = createTheme({
   palette: {
@@ -36,10 +35,10 @@ function MainHeader() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openModal, setOpenModal] = React.useState(false);
-  
 
-  const {user, logout} = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -69,22 +68,34 @@ function MainHeader() {
       await logout(() => navigate("/login"));
     } catch (error) {
       console.log(error);
-    }    
+    }
   };
 
   const handleOpenModal = () => {
-    setOpenModal(true)
+    setOpenModal(true);
   };
+  const handleRent = () => {
+    console.log('object');
+      if (!isAuthenticated) {
+        navigate("/login");
+      } else navigate("/");
+    
+  };
+  const handleOpenDashboardPage = () => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    } else handleCloseUserMenu();
+  }
 
   return (
     <ThemeProvider theme={theme}>
       <AppBar
         position="static"
         color="primary"
-        sx={{ borderRadius: "5px", height: "60px", }}
+        sx={{ borderRadius: "5px", height: "60px" }}
       >
         <Container maxWidth="xl">
-          <Toolbar disableGutters >
+          <Toolbar disableGutters>
             <RoofingIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
             <Typography
               variant="h6"
@@ -104,7 +115,7 @@ function MainHeader() {
               K-HOME
             </Typography>
 
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }} >
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -133,7 +144,7 @@ function MainHeader() {
                   display: { xs: "block", md: "none" },
                 }}
               >
-                <MenuItem key="Rent" onClick={handleCloseNavMenu}>
+                <MenuItem key="Rent" onClick={handleRent}>
                   <Typography textAlign="center">Rent</Typography>
                 </MenuItem>
                 <MenuItem key="Support" onClick={handleCloseNavMenu}>
@@ -166,7 +177,7 @@ function MainHeader() {
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <Button
                 key="Rent"
-                onClick={handleCloseNavMenu}
+                onClick={handleRent}
                 sx={{
                   my: 2,
                   color: "#111",
@@ -205,13 +216,13 @@ function MainHeader() {
               </Button>
             </Box>
 
-            <Box sx={{ flexGrow: 0, mr: 2 }}>
+            <Box sx={{ flexGrow: 0, mr: 2, }}>
               <Button
                 onClick={handleOpenModal}
                 variant="contained"
                 sx={{
                   padding: "18px 25px",
-                  lineHeight:"0",
+                  lineHeight: "0",
                   backgroundColor: "#01adba",
                   color: "#fff",
                   fontWeight: "600",
@@ -226,10 +237,7 @@ function MainHeader() {
               {user ? (
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar
-                      alt="Avatar"
-                      src={user?.avatarUrl}
-                    />
+                    <Avatar alt="Avatar" src={user?.avatarUrl} />
                   </IconButton>
                 </Tooltip>
               ) : (
@@ -262,7 +270,7 @@ function MainHeader() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem key="Home"  onClick={handleOpenHomePage}>
+                <MenuItem key="Home" onClick={handleOpenHomePage}>
                   <Typography sx={{ color: "secondary" }} textAlign="center">
                     Home
                   </Typography>
@@ -270,7 +278,7 @@ function MainHeader() {
                 <MenuItem key="Account" onClick={handleOpenAccountPage}>
                   <Typography textAlign="center">Account</Typography>
                 </MenuItem>
-                <MenuItem key="Dashboard" onClick={handleCloseUserMenu}>
+                <MenuItem key="Dashboard" onClick={handleOpenDashboardPage}>
                   <Typography textAlign="center">Dashboard</Typography>
                 </MenuItem>{" "}
                 <MenuItem key="Logout" onClick={handleLogout}>
