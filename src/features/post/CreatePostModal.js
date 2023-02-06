@@ -13,7 +13,7 @@ import { Stack } from "@mui/system";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { createPost } from "./postSlice";
+import { createPost, getPosts } from "./postSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { fData } from "../../utils/numberFormat";
 import { useState } from "react";
@@ -66,7 +66,7 @@ const addressList = [
 ];
 
 export default function BasicModal({ open, setOpen }) {
-  const [image, setImage] = useState()
+  // const [image, setImage] = useState()
   const dispatch = useDispatch();
   const handleClose = () => setOpen(false);
   const defaultValues = {
@@ -86,10 +86,11 @@ export default function BasicModal({ open, setOpen }) {
   const onSubmit = async (data) => {
     console.log("data image 1", data.image);
     try {
-      data.image = image
-    console.log("data image 2", data.image);
+      //   data.image = image
+      // console.log("data image 2", data.image);
 
       dispatch(createPost(data)).then(() => reset());
+      setOpen(false);
     } catch (error) {
       reset();
       console.log(error);
@@ -98,28 +99,28 @@ export default function BasicModal({ open, setOpen }) {
   };
   const handleDrop = useCallback(
     (acceptedFiles) => {
-      // console.log("acceptedFiles", acceptedFiles);
-      // const file = acceptedFiles[0];
-      // console.log(file);
-      // if (file) {
-      //   setValue(
-      //     "image",
-      //     Object.assign(file, { preview: URL.createObjectURL(file) })
-      //   );
-      // }
-
       console.log("acceptedFiles", acceptedFiles);
-      let files = [];
-      acceptedFiles.forEach((file, index) => {
-        files.push(
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
+      const file = acceptedFiles[0];
+      console.log(file);
+      if (file) {
+        setValue(
+          "image",
+          Object.assign(file, { preview: URL.createObjectURL(file) })
         );
-      });
-      console.log(files);
-      if (files) setValue("image", ...files);
-      setImage(files)
+      }
+
+      // console.log("acceptedFiles", acceptedFiles);
+      // let files = [];
+      // acceptedFiles.forEach((file, index) => {
+      //   files.push(
+      //     Object.assign(file, {
+      //       preview: URL.createObjectURL(file),
+      //     })
+      //   );
+      // });
+      // console.log(files);
+      // if (files) setValue("image", ...files);
+      // setImage(files)
     },
     [setValue]
   );
@@ -134,7 +135,7 @@ export default function BasicModal({ open, setOpen }) {
     >
       <Box sx={style}>
         <Typography variant="h5" component="h2">
-          Infomation of Your Home
+          Infomation of Your Accomodation
         </Typography>
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <FTextField name="title" label="Title" />

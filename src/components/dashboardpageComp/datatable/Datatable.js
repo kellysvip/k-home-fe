@@ -3,7 +3,6 @@ import { DataGrid } from "@mui/x-data-grid";
 import { userColumns, userRows } from "./datatablesource";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 
 const Datatable = () => {
   const [data, setData] = useState(userRows);
@@ -19,9 +18,9 @@ const Datatable = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/users/test" style={{ textDecoration: "none" }}>
+            {/* <Link to="/users/test" style={{ textDecoration: "none" }}> */}
               <div className="viewButton">View</div>
-            </Link>
+            {/* </Link> */}
             <div
               className="deleteButton"
               onClick={() => handleDelete(params.row.id)}

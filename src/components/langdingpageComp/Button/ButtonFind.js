@@ -1,16 +1,14 @@
 import React from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
-import LoadingScreen from "../../LoadingScreen";
 import "./ButtonFind.css";
 const ButtonFind = () => {
   const { isAuthenticated } = useAuth();
-const navigate = useNavigate('/')  
-const handleClick = () => {
+  const navigate = useNavigate("/");
+  const handleClick = () => {
     if (!isAuthenticated) {
-        navigate('/login')
-    }
-    else navigate('/')
+      navigate("/login");
+    } else navigate("/");
   };
 
   return (

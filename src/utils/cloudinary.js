@@ -11,7 +11,7 @@ export const cloudinaryUpload = async (images) => {
     //   console.log(images[i]);
     //   // formData.append(`file`, images[i]);
     // }
-           formData.append(`file`, images);
+    formData.append("file", images);
 
 
     formData.append("cloud_name", "kellysvip");

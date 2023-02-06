@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Box, Grid, Card, Stack, Typography, Alert } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import useAuth from "../../hooks/useAuth";
@@ -7,13 +7,10 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, FTextField, FUploadAvatar } from "../../components/form";
-// import { fData } from "../../utils/numberFormat";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserProfile } from "./userSlice";
 import { fData } from "../../utils/numberFormat";
 import LoadingScreen from "../../components/LoadingScreen";
-import apiService from "../../app/apiService";
-import ProductList from "../post/ProductList";
 import ProductListUser from "../post/ProductListUser";
 const updateUserSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -27,7 +24,7 @@ function AccountGeneral() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const {  totalPosts, isLoading } = useSelector(
+  const {  totalPostsOfUser, isLoading } = useSelector(
     (state) => state.post
   );
   const defaultValues = {
@@ -142,7 +139,7 @@ function AccountGeneral() {
                   variant="subtitle1"
                   sx={{ color: "#0499a8", fontWeight: "700", fontSize: "14px" }}
                 >
-                  Total Posts: {totalPosts}
+                  Total Posts: {totalPostsOfUser}
                 </Typography>
                 {loading ? (
                   <LoadingScreen />

@@ -72,7 +72,7 @@ const ImageSlider = ({ slides }) => {
         setInterval(() => {
             
             goToNext()
-            setCurrentIndex(i <= slides.length - 1 ? i++ : i=0);
+            setCurrentIndex((i <= slides.length - 1) ? i++ : i=0);
         }, 3000)
     }
     timer()

@@ -1,8 +1,4 @@
-import { styled } from "@mui/material/styles";
 import {
-  Link,
-  Card,
-  CardHeader,
   Stack,
   Box,
   Paper,
@@ -10,33 +6,48 @@ import {
   Typography,
   ToggleButton,
   Button,
+  Link,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 import React, { useState } from "react";
 import { createConversation } from "../conversation/conversationSlice";
 import useAuth from "../../hooks/useAuth";
-import { useDispatch } from "react-redux";
-import MessengerForm from "../../components/messenger/MessengerForm";
+import { useDispatch, useSelector } from "react-redux";
+import { addBookmark, deleteBookmark } from "../bookmark/bookmarkSlice";
+import { useNavigate } from "react-router-dom";
 
-function UserInfoCard({ profile }) {
-  const [bookmark, setBookmark] = React.useState(false);
-  const [conv, setConv] = useState(false);
-  const dispatch = useDispatch();
+function UserInfoCard({ profile, productId }) {
   const { user } = useAuth();
   const userId = user._id;
+  const navigate = useNavigate()
+
+  const [bookmark, setBookmark] = React.useState(false);
+
+  const dispatch = useDispatch();
+
   const handleCreateConversation = () => {
-    conv ? setConv(false) : setConv(true);
     try {
       let members = {
         senderId: userId,
         receiverId: profile._id,
       };
-      if (userId && profile._id) {
+      if (userId && profile._id ) {
         dispatch(createConversation({ members }));
       }
+      navigate("/messenger")
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handleAddBookmark = () => {
+    if (bookmark) {
+      setBookmark(false);
+      dispatch(deleteBookmark({ productId }));
+    } else {
+      setBookmark(true);
+      dispatch(addBookmark({ productId }));
     }
   };
 
@@ -90,16 +101,20 @@ function UserInfoCard({ profile }) {
             Phone: {profile?.phoneNumber}
           </Typography>
           <Button
-            variant="outlined" //
             sx={{
               color: "#01adba",
               fontWeight: "600",
               fontSize: "15px",
-              border: "1px solid #fff",
               m: 1,
             }}
           >
-            Call now
+            <Link
+              href={`https://zalo.me/${profile?.phoneNumber}`}
+              target="_blank"
+              sx={{color: "#01adba", textDecoration: "none"}}
+            >
+              Call Now
+            </Link>
           </Button>
         </Box>
         <Button
@@ -116,10 +131,10 @@ function UserInfoCard({ profile }) {
             mt: 1,
             ml: 2,
             mr: 2,
-            mb: 3
+            mb: 3,
           }}
         >
-          {conv ? "Quit Chat" : "Chat Now"}
+          Chat Now
         </Button>
       </Paper>
 
@@ -135,12 +150,10 @@ function UserInfoCard({ profile }) {
         <ToggleButton
           value="check"
           selected={bookmark}
-          onChange={() => {
-            setBookmark(!bookmark);
-          }}
+          onChange={handleAddBookmark}
           sx={{ color: "#f06292" }}
         >
-          <FavoriteIcon /> {bookmark ? "Save now" : "Not save"}
+          <FavoriteIcon /> {!bookmark ? "Saved" : "Save now"}
         </ToggleButton>
         <Box
           sx={{
@@ -159,11 +172,7 @@ function UserInfoCard({ profile }) {
           />
         </Box>
       </Box>
-      {conv && (
-        <Paper sx={{ minHeight: "40vh", mt: 1 }}>
-          <MessengerForm />
-        </Paper>
-      )}
+      
     </Stack>
   );
 }

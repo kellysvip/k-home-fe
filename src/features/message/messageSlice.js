@@ -10,7 +10,7 @@ const initialState = {
 };
 
 const slice = createSlice({
-  name: "conversation",
+  name: "message",
   initialState,
   reducers: {
     startLoading(state) {
@@ -34,7 +34,8 @@ const slice = createSlice({
     getMessageSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const { messages } = action.payload;
+      const { messages,conversationId } = action.payload;
+      state.convId = conversationId
       state.currentPageMessage = []
       console.log("messages", messages);
       messages.forEach((message) => {
@@ -43,6 +44,7 @@ const slice = createSlice({
           state.currentPageMessage.push(message._id);
       });
       state.totalMessages = messages.length;
+      // state.conversationId = messages.
     },
   },
 });

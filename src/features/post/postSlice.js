@@ -8,6 +8,7 @@ const initialState = {
   error: null,
   postsById: {},
   currentPagePost: [],
+  totalPostsOfUser: 0,
   totalPosts: 0,
 };
 
@@ -48,20 +49,30 @@ const slice = createSlice({
     getPostSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const { count, posts } = action.payload;
+      const { countPosts, posts } = action.payload;
       posts.forEach((post) => {
         state.postsById[post._id] = post;
         if (!state.currentPagePost.includes(post._id))
           state.currentPagePost.push(post._id);
       });
-      state.totalPosts = count;
+      state.totalPosts = countPosts;
+    },
+    getAllPostSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const { countPostOfUser, posts } = action.payload;
+      posts.forEach((post) => {
+        state.postsById[post._id] = post;
+        if (!state.currentPagePost.includes(post._id))
+          state.currentPagePost.push(post._id);
+      });
+      state.totalPostsOfUser = countPostOfUser;
     },
     getSinglePost(state, action) {
       state.isLoading = false;
       state.error = null;
       const { post } = action.payload;
       state.products = post;
-      
     },
 
     sendPostReactionSuccess(state, action) {
@@ -101,7 +112,8 @@ export const createPost =
         status: "available",
         isDeleted: false,
       });
-      dispatch(slice.actions.createPostSuccess(res.data));
+      dispatch(slice.actions.createPostSuccess(res.data.data.post));
+      toast.success("Create Post Success");
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
     }
@@ -113,9 +125,8 @@ export const deletePost =
     dispatch(slice.actions.startLoading());
     try {
       const res = await apiService.delete(`/posts/${postId}`);
-      console.log(res.data.data.post);
-      toast.success("Delete Post Success");
       dispatch(slice.actions.deletePostSuccess(res.data.data.post));
+      toast.success("Delete Post Success");
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
     }
@@ -198,33 +209,33 @@ export const getPostsOfUser =
       const url = `/posts/user/${userId}?page=${page}&limit=${limit}`;
       const response = await apiService.get(url);
       if (page === 1) dispatch(slice.actions.resetPosts());
-      dispatch(slice.actions.getPostSuccess(response.data.data));
+      dispatch(slice.actions.getAllPostSuccess(response.data.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);
     }
   };
 
-export const sendPostReaction =
-  ({ postId, emoji }) =>
-  async (dispatch) => {
-    dispatch(slice.actions.startLoading());
-    try {
-      const response = await apiService.post(`/reactions`, {
-        targetType: "Post",
-        targetId: postId,
-        emoji,
-      });
-      dispatch(
-        slice.actions.sendPostReactionSuccess({
-          postId,
-          reactions: response.data,
-        })
-      );
-    } catch (error) {
-      dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
-    }
-  };
+// export const sendPostReaction =
+//   ({ postId, emoji }) =>
+//   async (dispatch) => {
+//     dispatch(slice.actions.startLoading());
+//     try {
+//       const response = await apiService.post(`/reactions`, {
+//         targetType: "Post",
+//         targetId: postId,
+//         emoji,
+//       });
+//       dispatch(
+//         slice.actions.sendPostReactionSuccess({
+//           postId,
+//           reactions: response.data,
+//         })
+//       );
+//     } catch (error) {
+//       dispatch(slice.actions.hasError(error.message));
+//       toast.error(error.message);
+//     }
+//   };
 
 export default slice.reducer;

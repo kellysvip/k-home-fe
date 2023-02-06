@@ -4,7 +4,7 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useAuth from "../../hooks/useAuth";
-import { getPosts, getPostsOfUser } from "./postSlice";
+import { getPostsOfUser } from "./postSlice";
 import ProductCard from "./ProductCard";
 
 const ProductListUser = () => {
@@ -13,7 +13,7 @@ const ProductListUser = () => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
 
-  const { currentPagePost, postsById, totalPosts, isLoading } = useSelector(
+  const { currentPagePost, postsById, totalPostsOfUser, isLoading } = useSelector(
     (state) => state.post
   );
 
@@ -30,7 +30,7 @@ const ProductListUser = () => {
         <ProductCard key={post._id} product={post} />
       ))}
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        {totalPosts ? (
+        {totalPostsOfUser ? (
           <LoadingButton
             size="small"
             loading={isLoading}

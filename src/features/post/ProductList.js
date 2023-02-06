@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { orderBy } from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,10 +7,12 @@ import { getPosts } from "./postSlice";
 import ProductCard from "./ProductCard";
 
 function ProductList({ filters }) {
-  console.log(filters);
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
-  const { currentPagePost, postsById, totalPosts } = useSelector((state) => state.post);
+  const { currentPagePost, postsById, totalPosts } = useSelector(
+    (state) => state.post
+  );
+
   const products = currentPagePost.map((postId) => postsById[postId]);
   const filterProducts = applyFilter(products, filters);
   const handleChangePage = (event, newPage) => {
@@ -29,10 +31,21 @@ function ProductList({ filters }) {
 
   return (
     <Stack container spacing={2}>
-      {filterProducts.map((product, index) => (
-        <ProductCard key={products._id} product={product} />
-      ))}
-      <PaginationCustom page={page} handleChangePage={handleChangePage} count={Math.ceil(totalPosts/10)} />
+      {filterProducts.length > 0? (
+        <>
+          {filterProducts.map((product, index) => (
+            <ProductCard key={products._id} product={product} />
+          ))}
+          <PaginationCustom
+            page={page}
+            handleChangePage={handleChangePage}
+            count={Math.ceil(totalPosts / 10)}
+          />
+        </>
+      ) : (
+        <><Typography>No results were found</Typography>
+        </>
+      )}
     </Stack>
   );
 }

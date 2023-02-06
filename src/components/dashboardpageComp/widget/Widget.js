@@ -1,12 +1,8 @@
 import "./widget.scss";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
-import { useDispatch, useSelector } from "react-redux";
-import { getCurrentUserProfile } from "../../../features/users/userSlice";
-import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const Widget = ({ type }) => {
   let data;

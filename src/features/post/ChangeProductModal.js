@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import {
   FormProvider,
   FSelect,
@@ -13,7 +12,7 @@ import { Stack } from "@mui/system";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { changePost, createPost } from "./postSlice";
+import { changePost } from "./postSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { fData } from "../../utils/numberFormat";
 
@@ -91,7 +90,6 @@ export default function ChangeProductModal({ product }) {
 
   const onSubmitChangePost = async (data) => {
     try {
-      console.log('dataa', data);
       dispatch(changePost(productId, data));
     } catch (error) {
       reset();

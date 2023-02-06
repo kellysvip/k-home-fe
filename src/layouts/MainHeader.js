@@ -14,11 +14,12 @@ import MenuItem from "@mui/material/MenuItem";
 import RoofingIcon from "@mui/icons-material/Roofing";
 import useAuth from "../hooks/useAuth";
 import LoginIcon from "@mui/icons-material/Login";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
-import { createTheme, Modal } from "@mui/material";
+import { createTheme, Link } from "@mui/material";
 import CreatePostModal from "../features/post/CreatePostModal";
-import { Link as RouterLink } from "react-router-dom";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
+import useWindowSize from "../hooks/useWindowSize";
 
 let theme = createTheme({
   palette: {
@@ -39,6 +40,7 @@ function MainHeader() {
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
+  const size = useWindowSize();
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -60,6 +62,7 @@ function MainHeader() {
   const handleOpenAccountPage = () => {
     setAnchorElUser(null);
     navigate("/user/me");
+    setAnchorElUser(null);
   };
 
   const handleLogout = async () => {
@@ -72,20 +75,30 @@ function MainHeader() {
   };
 
   const handleOpenModal = () => {
-    setOpenModal(true);
+    if (user) setOpenModal(true);
+    else navigate("/login");
   };
   const handleRent = () => {
-    console.log('object');
-      if (!isAuthenticated) {
-        navigate("/login");
-      } else navigate("/");
-    
+    if (!isAuthenticated) {
+      navigate("/login");
+    } else navigate("/");
   };
   const handleOpenDashboardPage = () => {
     if (isAuthenticated) {
       navigate("/dashboard");
+      setAnchorElUser(null);
     } else handleCloseUserMenu();
-  }
+  };
+
+  const handleOpenLandingPage = () => {
+    navigate("/landingpage");
+    setAnchorElUser(null);
+  };
+
+  const handleOpenBookmarkPage = () => {
+    navigate("/bookmark");
+    setAnchorElUser(null);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -150,8 +163,8 @@ function MainHeader() {
                 <MenuItem key="Support" onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">Support</Typography>
                 </MenuItem>
-                <MenuItem key="Pricing" onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">Pricing</Typography>
+                <MenuItem key="LandingPage" onClick={handleOpenLandingPage}>
+                  <Typography textAlign="center">LandingPage</Typography>
                 </MenuItem>
               </Menu>
             </Box>
@@ -202,8 +215,8 @@ function MainHeader() {
                 Support
               </Button>
               <Button
-                key="Pricing"
-                onClick={handleCloseNavMenu}
+                key="LandingPage"
+                onClick={handleOpenLandingPage}
                 sx={{
                   my: 2,
                   color: "#111",
@@ -212,11 +225,11 @@ function MainHeader() {
                   fontSize: "12px",
                 }}
               >
-                Pricing
+                LandingPage
               </Button>
             </Box>
 
-            <Box sx={{ flexGrow: 0, mr: 2, }}>
+            <Box sx={{ flexGrow: 0, mr: 2 }}>
               <Button
                 onClick={handleOpenModal}
                 variant="contained"
@@ -232,7 +245,18 @@ function MainHeader() {
                 post
               </Button>
             </Box>
-
+            {user && (
+              <Link
+                href="/bookmark"
+                sx={{ display: { md: "flex", sm: "flex", xs: "none" } }}
+              >
+                <Tooltip title="My Bookmark">
+                  <IconButton sx={{ mr: 2, color: "#01adba" }}>
+                    <BookmarksIcon fontSize="large" />
+                  </IconButton>
+                </Tooltip>
+              </Link>
+            )}
             <Box sx={{ flexGrow: 0 }}>
               {user ? (
                 <Tooltip title="Open settings">
@@ -249,9 +273,8 @@ function MainHeader() {
                   onClick={() => {
                     navigate("/login");
                   }}
-                  color="inherit"
                 >
-                  <LoginIcon />
+                  <LoginIcon fontSize="large" sx={{ color: "#01adba" }} />
                 </IconButton>
               )}
               <Menu
@@ -275,6 +298,13 @@ function MainHeader() {
                     Home
                   </Typography>
                 </MenuItem>
+                {size.width < 600 && (
+                  <MenuItem key="Home" onClick={handleOpenBookmarkPage}>
+                    <Typography sx={{ color: "secondary" }} textAlign="center">
+                      Bookmark
+                    </Typography>
+                  </MenuItem>
+                )}
                 <MenuItem key="Account" onClick={handleOpenAccountPage}>
                   <Typography textAlign="center">Account</Typography>
                 </MenuItem>

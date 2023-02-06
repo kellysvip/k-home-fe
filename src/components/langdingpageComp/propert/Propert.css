@@ -13,7 +13,7 @@
 }
 
 .row-propert {
-  padding-top: 4rem;
+  padding-top: 2rem;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
@@ -29,6 +29,10 @@
 .column-propert {
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.card-propert {
+  cursor: pointer;
 }
 
 .property-thumb {
@@ -165,78 +169,70 @@
     padding: 15px;
   }
   .more-property {
-    padding-top: .5rem;
+    padding-top: 0.5rem;
   }
 }
 
 @media screen and (max-width: 560px) {
-    .single-property {
-        width: 450px;
-    }
-    .property-thumb img {
-        width: 450px;
-      }
-      .column-propert {
-        padding-bottom: 1rem;
-      }
+  .single-property {
+    width: 450px;
+  }
+  .property-thumb img {
+    width: 450px;
+  }
+  .column-propert {
+    padding-bottom: 1rem;
+  }
 }
 @media screen and (max-width: 483px) {
-    .center h3 {
-        font-size: 35px;
-    }
-    .single-property {
-        width: 400px;
-    }
-    .property-thumb img {
-        width: 400px;
-      }
-    .more-property .property-btn {
-        padding: 12px 25px;
-        font-size: 14px;
-    }
+  .center h3 {
+    font-size: 35px;
+  }
+  .single-property {
+    width: 400px;
+  }
+  .property-thumb img {
+    width: 400px;
+  }
+  .more-property .property-btn {
+    padding: 12px 25px;
+    font-size: 14px;
+  }
 }
 
 @media screen and (max-width: 430px) {
-   
-    .single-property {
-        width: 350px;
-    }
-    .property-thumb img {
-        width: 350px;
-      }
-    .column-propert{
-       padding-left: 15px;
-       padding-right: 15px;
-
-    }
+  .single-property {
+    width: 350px;
+  }
+  .property-thumb img {
+    width: 350px;
+  }
+  .column-propert {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }
 
 @media screen and (max-width: 383px) {
-   .property h3 {
+  .property h3 {
     font-size: 28px;
-   }
-   .property-content h3 {
+  }
+  .property-content h3 {
     font-size: 14px;
-
-   }
-    .single-property {
-        width: 300px;
-    }
-    .property-thumb img {
-        width: 300px;
-      }
-    .column-propert{
-       padding-left: 12px;
-       padding-right: 12px;
-
-    }
-    .property-footer ul li span {
-        font-size: 10px;
-        font-weight: 400;
-        margin-left: 3px;
-    }
+  }
+  .single-property {
+    width: 300px;
+  }
+  .property-thumb img {
+    width: 300px;
+  }
+  .column-propert {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .property-footer ul li span {
+    font-size: 10px;
+    font-weight: 400;
+    margin-left: 3px;
+  }
 }
-
-
-
-

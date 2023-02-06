@@ -6,6 +6,7 @@ const initialState = {
   error: null,
   senderId: "",
   receiverId: "",
+  conversation: [],
   totalConversations: 0,
 };
 
@@ -24,12 +25,12 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = null;
       const { newConversation } = action.payload;
-      state.conversation = newConversation;
+      state.conversation.push(newConversation) ;
       state.convInfo = {
         conversationId: newConversation._id,
         senderId: newConversation.members[0],
         receiverId: newConversation.members[1],
-      }
+      };
     },
     resetConversations(state) {
       state.postsById = {};
@@ -39,20 +40,20 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = null;
       const { conversation } = action.payload;
-      state.conversation = conversation[0]
-      state.senderId = conversation[0].members[0]
-      state.receiverId = conversation[0].members[1]
+      state.conversation = conversation;
+      // state.senderId = conversation[0].members[0];
+      // state.receiverId = conversation[0].members[1];
     },
   },
 });
 
 export const createConversation =
-  ( {members} ) =>
+  ({ members }) =>
   async (dispatch) => {
     console.log("members", members);
     dispatch(slice.actions.startLoading());
     try {
-      const res = await apiService.post("/conversations",  members);
+      const res = await apiService.post("/conversations", members);
       dispatch(slice.actions.createConversationSuccess(res.data.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
@@ -60,13 +61,15 @@ export const createConversation =
   };
 
 export const getConversations =
-  ({ userId, ownPostId }) =>
+  ({ userId, receiverId }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
-    console.log("userId, ownPostId", userId, ownPostId  );
+    console.log("userId, ownPostId", userId, receiverId);
     try {
-      const response = await apiService.get(`/conversations/${userId}?ownPostId=${ownPostId}`);
-      console.log("response in conv", response.data.data); 
+      let url = `/conversations/${userId}`;
+      url += receiverId ? `?ownPostId=${receiverId}` : "";
+
+      const response = await apiService.get(url);
       dispatch(slice.actions.getConversationSuccess(response.data.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));

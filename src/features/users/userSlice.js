@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import apiService from "../../app/apiService";
-import { cloudinaryUpload } from "../../utils/cloudinary";
 import { cloudinaryUploadAvatar } from "../../utils/cloudinaryAvt";
 
 const initialState = {
@@ -79,6 +78,7 @@ export const updateUserProfile =
         data.avatarUrl = imageUrl;
       }
       const response = await apiService.put(`/users/${userId}`, data);
+      
       dispatch(slice.actions.updateUserProfileSuccess(response.data));
       toast.success("Update Profile successfully");
     } catch (error) {

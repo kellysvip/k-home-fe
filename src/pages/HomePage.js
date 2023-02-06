@@ -6,7 +6,9 @@ import {
   Container,
   createTheme,
   Grid,
+  Link,
   Stack,
+  Typography,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { useForm } from "react-hook-form";
@@ -16,8 +18,19 @@ import ProductSort from "../components/product/ProductSort";
 import ProductList from "../features/post/ProductList";
 import ProductAddressSort from "../components/product/ProductAddressSort";
 import ProductPriceSort from "../components/product/ProductPriceSort";
+import BreadCrumbs from "../components/BreadCrumbs";
 
 const theme = createTheme();
+
+const breadcrumbsHomePage = [
+  <Link underline="hover" key="1" color="inherit" href="/landingpage" >
+    K-HOME
+  </Link>,
+  
+  <Typography key="3" color="text.primary">
+    Home
+  </Typography>,
+];
 
 function HomePage() {
   const [error, setError] = useState("");
@@ -40,9 +53,10 @@ function HomePage() {
           display: "flex",
           flexDirection: "column",
           minHeight: "100vh",
-          mt: 3,
+          mt: 2,
         }}
       >
+        <BreadCrumbs breadcrumb={breadcrumbsHomePage}/>
         <FormProvider methods={methods}>
           <Stack
             spacing={2}
@@ -50,6 +64,7 @@ function HomePage() {
             alignItems={{ sm: "center" }}
             justifyContent="space-between"
             mb={2}
+            mt={1}
           >
             <ProductSearch />
             <Stack sx={{ flexDirection: { md: "row", xs: "column" } }}>

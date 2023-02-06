@@ -7,10 +7,12 @@ import Single from "../components/dashboardpageComp/pagesComp/single/Single";
 import BlankLayout from "../layouts/BlankLayout";
 import MainLayout from "../layouts/MainLayout";
 import AccountPage from "../pages/AccountPage";
+import BookmarkPage from "../pages/BookmarkPage";
 import DetailPage from "../pages/DetailPage";
 import HomePage from "../pages/HomePage";
 import LandingPage from "../pages/LandingPage";
 import LoginPage from "../pages/LoginPage";
+import MessengerPage from "../pages/MessengerPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import RegisterPage from "../pages/RegisterPage";
 import AuthRequire from "./AuthRequire";
@@ -26,10 +28,7 @@ function Router() {
         <Route path="users">
           <Route index element={<List />} />
           <Route path=":userId" element={<Single />} />
-          {/* <Route
-                path="new"
-                element={<New inputs={userInputs} title="Add New User" />}
-              /> */}
+          
         </Route>
       </Route>
       <Route
@@ -42,7 +41,9 @@ function Router() {
       >
         <Route index element={<HomePage />} />
         <Route path="product/:_id" element={<DetailPage />} />
+        <Route path="bookmark" element={<BookmarkPage />} />
         <Route path="user/me" element={<AccountPage />} />
+        <Route path="messenger" element={<MessengerPage />} />
       </Route>
       <Route element={<BlankLayout />}>
         <Route path="/login" element={<LoginPage />} />

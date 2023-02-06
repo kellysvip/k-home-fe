@@ -1,4 +1,4 @@
-import { Button, Container, Grid, IconButton, Typography } from "@mui/material";
+import { Container, Grid, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -6,9 +6,6 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import GoogleIcon from "@mui/icons-material/Google";
 import ButtonFind from "../Button/ButtonFind";
 const Introduce = () => {
-  const handleClick = () => {
-    console.log("object");
-  };
 
   return (
     <section>

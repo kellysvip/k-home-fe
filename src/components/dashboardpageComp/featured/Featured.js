@@ -6,6 +6,9 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 
 const Featured = () => {
+
+  
+
   return (
     <div className="featured">
       <div className="top">
