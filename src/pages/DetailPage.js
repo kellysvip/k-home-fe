@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import BreadCrumbs from "../components/BreadCrumbs";
 import SimpleMap from "../components/Map";
+import ImageSliderProduct from "../components/product/ImageSliderProduct";
 import { getSinglePost } from "../features/post/postSlice";
 // import PostSlider from "../features/post/PostSlider";
 import UserInfoCard from "../features/users/UserInfoCard";
@@ -42,6 +43,7 @@ const breadcrumbsHomePage = [
   </Typography>,
 ];
 
+
 function DetailPage() {
   const { _id } = useParams();
   const size = useWindowSize();
@@ -50,6 +52,7 @@ function DetailPage() {
   useEffect(() => {
     dispatch(getSinglePost({ _id }));
   }, [_id, dispatch]);
+  
   return (
     <ThemeProvider theme={theme}>
       <Container
@@ -74,15 +77,12 @@ function DetailPage() {
               maxWidth: { xs: "320px", sm: "700px", md: "700px" },
             }}
           >
-            <Stack sx={{ maxWidth: "700px" }}>
+            <Stack sx={{ maxWidth: "700px", overflow: "hidden" }}>
               <Box sx={{ position: "relative" }}>
-                <CardMedia
-                  component="img"
-                  image={products?.imageUrl}
-                  alt="cHomePic"
-                  sx={{ position: "relative", minWidth: { md: "700px" } }}
-                />
+                
+                <ImageSliderProduct/>
               </Box>
+             
               <Box sx={{ position: "relative", mt: 1 }}>
                 <Typography
                   gutterBottom

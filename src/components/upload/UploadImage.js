@@ -19,7 +19,26 @@ const DropZoneStyle = styled("div")(({ theme }) => ({
   "&:hover": { opacity: 0.72, cursor: "pointer" },
 }));
 
-function UploadImage({ error , file, helperText, sx, ...other }) {
+function UploadImage({ error, file, fileArray, helperText, sx, ...other }) {
+  console.log("fileArray", fileArray);
+  const imgBox = fileArray?.map((file) => (
+    
+    <Box
+      sx={{
+        top: 8,
+        left: 8,
+        borderRadius: 1,
+        position: "absolute",
+        width: "calc(100% - 16px)",
+        height: "calc(100% - 16px)",
+        overflow: "hidden",
+        "& img": { objectFit: "cover", width: 1, height: 1 },
+      }}
+    >
+      <img alt="file preview" src={isString(file) ? file : file.preview} />
+    </Box>
+  ));
+
   const {
     getRootProps,
     getInputProps,
@@ -47,7 +66,7 @@ function UploadImage({ error , file, helperText, sx, ...other }) {
           }),
         }}
       >
-        <input  {...getInputProps()} />
+        <input {...getInputProps()} />
 
         {!file && (
           <Stack
@@ -69,7 +88,7 @@ function UploadImage({ error , file, helperText, sx, ...other }) {
           </Stack>
         )}
 
-        {file && (
+        {/* {!file && (
           <Box
             sx={{
               top: 8,
@@ -87,7 +106,8 @@ function UploadImage({ error , file, helperText, sx, ...other }) {
               src={isString(file) ? file : file.preview}
             />
           </Box>
-        )}
+        )} */}
+        {imgBox }
       </DropZoneStyle>
 
       {fileRejections.length > 0 && (
@@ -100,4 +120,3 @@ function UploadImage({ error , file, helperText, sx, ...other }) {
 }
 
 export default UploadImage;
-

@@ -11,10 +11,10 @@ function FUploadImage({ name, ...other }) {
       control={control}
       render={({ field, fieldState: { error } }) => {
         const checkError = !!error && !field.value;
-
+        console.log("field", field)
         return (
           <div>
-            <UploadImage file={field.value} error={checkError} {...other} />
+            <UploadImage file={field.value} fileArray={field.value} error={checkError} {...other} />
             {checkError && (
               <FormHelperText error sx={{ px: 2, textAlign: "center" }}>
                 {error.message}

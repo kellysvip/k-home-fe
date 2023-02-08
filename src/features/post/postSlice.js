@@ -100,6 +100,7 @@ export const createPost =
     try {
       console.log(image);
       const imageUrl = await cloudinaryUpload(image);
+      console.log("imageUrl in slice",imageUrl)
       const res = await apiService.post("/posts", {
         title,
         address,

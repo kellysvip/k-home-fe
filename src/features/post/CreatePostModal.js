@@ -63,7 +63,7 @@ const addressList = [
   { value: "Tan Binh District", label: "Tan Binh District" },
   { value: "Tan Phu District", label: "Tan Phu District" },
   { value: "Thu Duc City", label: "Thu Duc City" },
-];
+]; // change value
 
 export default function BasicModal({ open, setOpen }) {
   // const [image, setImage] = useState()
@@ -100,12 +100,14 @@ export default function BasicModal({ open, setOpen }) {
   const handleDrop = useCallback(
     (acceptedFiles) => {
       console.log("acceptedFiles", acceptedFiles);
-      const file = acceptedFiles[0];
-      console.log(file);
-      if (file) {
+      // const file = acceptedFiles[0];
+      // console.log(file);
+      if (acceptedFiles) {
         setValue(
           "image",
-          Object.assign(file, { preview: URL.createObjectURL(file) })
+          acceptedFiles.map((file) => {
+            return Object.assign(file, { preview: URL.createObjectURL(file) })
+          })
         );
       }
 

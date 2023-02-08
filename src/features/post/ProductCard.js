@@ -144,19 +144,23 @@ function ProductCard({ product }) {
       <Card sx={{ maxHeight: "227px", flexGrow: 1 }}>
         <CardActionArea>
           <Stack direction="row">
-            <CardMedia
-              component="img"
-              image={product.imageUrl}
-              alt="kHomePic"
-              onClick={() => navigate(`/product/${product._id}`)}
-              sx={{
-                position: "relative",
-                top: "-13px",
-                width: { xs: "150px", md: "250px", borderRadius: "5px" },
-                height: "240px",
-                maxWidth: "250px",
-              }}
-            />
+            <Box
+            >
+              <CardMedia
+                component="img"
+                image={product.imageUrl[0]}
+                alt="kHomePic"
+                onClick={() => navigate(`/product/${product._id}`)}
+                sx={{
+                  position: "relative",
+                  top: "-13px",
+                  minWidth: { xs: "150px", md: "250px", sm: "250px" },
+                  height: "240px",
+                  maxWidth: "250px",
+                  borderRadius: "5px",
+                }}
+              />
+            </Box>
             <CardContent>
               <Stack
                 flexDirection="row"
