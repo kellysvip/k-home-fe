@@ -30,10 +30,6 @@ const ChatList = () => {
 
   return (
     <div className="main__chatlist">
-      <button className="btn">
-        <i className="fa fa-plus"></i>
-        <span>New conversation</span>
-      </button>
       <div className="chatlist__heading">
         <h2>Chats</h2>
         <button className="btn-nobg">
@@ -57,7 +53,7 @@ const ChatList = () => {
                   ? conv.members[1]?.name
                   : conv.members[0]?.name
               }
-                key={index + 1}
+              key={index + 1}
               animationDelay={index + 1}
               active="active"
               isOnline="active"

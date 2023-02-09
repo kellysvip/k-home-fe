@@ -24,6 +24,7 @@ import { deletePost } from "./postSlice";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { green, red, yellow } from "@mui/material/colors";
 import useWindowSize from "../../hooks/useWindowSize";
+import moment from "moment/moment";
 
 const theme = createTheme({
   palette: {
@@ -215,7 +216,7 @@ function ProductCard({ product }) {
 
                 <Stack flexDirection="row">
                   <Typography variant="subtitle1">
-                    {product?.updatedAt?.slice(0, 10)}
+                    {moment(product?.updatedAt).format('DD/MM/YYYY') }
                   </Typography>
                   {product.status === "available"
                     ? size.width >= 430 && (

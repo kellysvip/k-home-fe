@@ -22,7 +22,7 @@ import BreadCrumbs from "../components/BreadCrumbs";
 import SimpleMap from "../components/Map";
 import ImageSliderProduct from "../components/product/ImageSliderProduct";
 import { getSinglePost } from "../features/post/postSlice";
-// import PostSlider from "../features/post/PostSlider";
+import PostSlider from "../features/post/PostSlider";
 import UserInfoCard from "../features/users/UserInfoCard";
 import useWindowSize from "../hooks/useWindowSize";
 const theme = createTheme();
@@ -163,11 +163,11 @@ function DetailPage() {
                 {size.width < 900 && (
                   <UserInfoCard
                     profile={products?.author}
-                    productId={products?._id}
+                    products={products}
                   />
                 )}
               </Box>{" "}
-              {/* <PostSlider /> */}
+              <PostSlider />
             </Stack>
           </Paper>
 

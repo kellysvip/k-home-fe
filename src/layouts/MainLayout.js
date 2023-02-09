@@ -4,7 +4,6 @@ import MainFooter from "./MainFooter";
 import MainHeader from "./MainHeader";
 import { ToastContainer } from "react-toastify";
 import AlertMsg from "../components/AlertMsg";
-//, m: "-10px"
 function MainLayout() {
   return (
     <Stack sx={{ minHeight: "100vh", bgcolor: "rgb(232,240,254)" }}> 

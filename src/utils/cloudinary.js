@@ -20,7 +20,6 @@ export const cloudinaryUpload = async (images) => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      // console.log("responseformData", response.data.secure_url);
       imageUrl.push(response.data.secure_url);
     }
 

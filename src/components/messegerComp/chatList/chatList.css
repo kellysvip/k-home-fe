@@ -88,6 +88,7 @@
   .avatar img {
     max-width: 100%;
     object-fit: cover;
+    height: 40px;
   }
   
   .chatlist__item .userMeta p {
