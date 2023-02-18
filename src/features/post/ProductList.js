@@ -6,7 +6,7 @@ import PaginationCustom from "../../components/Pagination";
 import { getPosts } from "./postSlice";
 import ProductCard from "./ProductCard";
 
-function ProductList({ filters }) {
+function ProductList({ filters, filtersPd }) {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const { currentPagePost, postsById, totalPosts } = useSelector(
@@ -14,7 +14,7 @@ function ProductList({ filters }) {
   );
 
   const products = currentPagePost.map((postId) => postsById[postId]);
-  const filterProducts = applyFilter(products, filters);
+  const filterProducts = applyFilter(products, filtersPd);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -31,7 +31,7 @@ function ProductList({ filters }) {
 
   return (
     <Stack container spacing={2}>
-      {filterProducts.length > 0? (
+      {filterProducts.length > 0 ? (
         <>
           {filterProducts.map((product, index) => (
             <ProductCard key={products._id} product={product} />
@@ -39,24 +39,29 @@ function ProductList({ filters }) {
           <PaginationCustom
             page={page}
             handleChangePage={handleChangePage}
-            count={Math.ceil(totalPosts / 10)}
+            count={Math.ceil(totalPosts / 10) - 2}
           />
         </>
       ) : (
-        <><Typography>No results were found</Typography>
+        <>
+          <Typography>No results were found</Typography><PaginationCustom
+            page={page}
+            handleChangePage={handleChangePage}
+            count={Math.ceil(totalPosts / 10) - 2}
+          />
         </>
       )}
     </Stack>
   );
 }
 
-function applyFilter(products, filters) {
-  const { sortBy } = filters;
+function applyFilter(products, filtersPd) {
+  const { sortBy } = filtersPd;
   let filteredProducts = products;
 
   // SORT BY
   if (sortBy === "featured") {
-    filteredProducts = orderBy(products, ["sold"], ["desc"]);
+    filteredProducts = orderBy(products, ["status"], ["available"]);
   }
   if (sortBy === "newest") {
     filteredProducts = orderBy(products, ["createdAt"], ["desc"]);
@@ -68,17 +73,6 @@ function applyFilter(products, filters) {
     filteredProducts = orderBy(products, ["price"], ["asc"]);
   }
 
-  if (filters.price) {
-    filteredProducts = products.filter((product) => {
-      if (filters.price === "price1") {
-        return product.price < 1;
-      }
-      if (filters.price === "price2") {
-        return product.price >= 1 && product.price <= 3;
-      }
-      return product.price > 3;
-    });
-  }
   return filteredProducts;
 }
 

@@ -19,9 +19,9 @@ export const FILTER_TIME_OPTIONS = [
 ];
 
 export const FILTER_PRICE_OPTIONS = [
-  { value: "below", label: "Below 1 milion Dong" },
-  { value: "between", label: "Between 1 - 3 milion Dong" },
-  { value: "above", label: "Above 3 milion Dong" },
+  { value: "below", label: "Below 3 milion Dong" },
+  { value: "between", label: "Between 3 - 6 milion Dong" },
+  { value: "above", label: "Above 6 milion Dong" },
 ];
 
 function ProductFilter({resetFilter}) {

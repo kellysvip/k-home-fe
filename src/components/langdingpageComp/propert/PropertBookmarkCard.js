@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, {  } from "react";
 import { useNavigate } from "react-router-dom";
-import { getSinglePost } from "../../../features/post/postSlice";
 import "./Propert.css";
 const PropertBookmarkCard = ({ bookmark }) => {
   const navigate = useNavigate()
@@ -14,7 +12,7 @@ const PropertBookmarkCard = ({ bookmark }) => {
         >
           <div className="property-thumb">
             {/* <div className="property-tag">Forsale</div> */}
-            <img src={bookmark.imageUrl} alt="" />
+            <img src={bookmark.imageUrl[0]} alt="" />
           </div>
           <div className="property-content">
             <h3>{bookmark.title}</h3>

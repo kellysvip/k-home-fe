@@ -39,7 +39,6 @@ function MainHeader() {
 
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-
   const size = useWindowSize();
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -308,9 +307,11 @@ function MainHeader() {
                 <MenuItem key="Account" onClick={handleOpenAccountPage}>
                   <Typography textAlign="center">Account</Typography>
                 </MenuItem>
-                <MenuItem key="Dashboard" onClick={handleOpenDashboardPage}>
-                  <Typography textAlign="center">Dashboard</Typography>
-                </MenuItem>{" "}
+                {'63ea296a09d7e41a329cd07b' === user?._id && (
+                  <MenuItem key="Dashboard" onClick={handleOpenDashboardPage}>
+                    <Typography textAlign="center">Dashboard</Typography>
+                  </MenuItem>
+                )}
                 <MenuItem key="Logout" onClick={handleLogout}>
                   <Typography textAlign="center">Logout</Typography>
                 </MenuItem>

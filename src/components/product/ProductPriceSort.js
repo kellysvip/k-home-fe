@@ -11,9 +11,9 @@ function ProductPriceSort() {
       >
         {[
           { value: "", label: "" },
-          { value: "price1", label: "Below 1 milion Dong" },
-          { value: "price2", label: "Between 1 - 3 milion Dong" },
-          { value: "price3", label: "Above 3 milion Dong" },
+          { value: "price1", label: "Below 3 milion Dong" },
+          { value: "price2", label: "Between 3 - 5 milion Dong" },
+          { value: "price3", label: "Above 5 milion Dong" },
           
         ].map((option) => (
           <option key={option.value} value={option.value}>

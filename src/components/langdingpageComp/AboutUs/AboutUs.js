@@ -11,7 +11,8 @@ const AboutUs = () => {
       <section className="about">
         <div className="row">
           <div className="column">
-            <div className="about-img"></div>
+            <div className="about-img">
+            </div>
           </div>
 
           <div className="column">

@@ -11,7 +11,7 @@ export default function PaginationCustom({ page, handleChangePage, count }) {
     <Stack spacing={2}>
       <Pagination
         sx={{ display: "flex", justifyContent: "center", mt: 2 }}
-        count={count || 10}
+        count={count || 10 - 2}
         page={page}
         onChange={handleChangePage}
         renderItem={(item) => (

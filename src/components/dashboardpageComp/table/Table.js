@@ -38,7 +38,7 @@ const List = () => {
               </TableCell>
               <TableCell className="tableCell">
                 <div className="cellWrapper">
-                  <img src={product.imageUrl} alt="" className="image" />
+                  <img src={product.imageUrl[0]} alt="" className="image" />
                   {product.product}
                 </div>
               </TableCell>

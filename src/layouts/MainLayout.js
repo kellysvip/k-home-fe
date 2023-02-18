@@ -2,7 +2,6 @@ import { Outlet } from "react-router-dom";
 import { Box, Stack } from "@mui/material";
 import MainFooter from "./MainFooter";
 import MainHeader from "./MainHeader";
-import { ToastContainer } from "react-toastify";
 import AlertMsg from "../components/AlertMsg";
 function MainLayout() {
   return (

@@ -10,10 +10,10 @@ import {
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
-import React, { useState } from "react";
+import React from "react";
 import { createConversation } from "../conversation/conversationSlice";
 import useAuth from "../../hooks/useAuth";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addBookmark, deleteBookmark } from "../bookmark/bookmarkSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -34,6 +34,7 @@ function UserInfoCard({ profile, productId }) {
       };
       if (userId && profile._id ) {
         dispatch(createConversation({ members }));
+        
       }
       navigate("/messenger")
     } catch (error) {

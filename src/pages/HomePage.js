@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { ThemeProvider } from "@emotion/react";
 import {
   Alert,
@@ -23,10 +23,10 @@ import BreadCrumbs from "../components/BreadCrumbs";
 const theme = createTheme();
 
 const breadcrumbsHomePage = [
-  <Link underline="hover" key="1" color="inherit" href="/landingpage" >
+  <Link underline="hover" key="1" color="inherit" href="/landingpage">
     K-HOME
   </Link>,
-  
+
   <Typography key="3" color="text.primary">
     Home
   </Typography>,
@@ -45,6 +45,14 @@ function HomePage() {
   });
   const { watch } = methods;
   const filters = watch();
+  const filtersApi = {
+    address: filters.address,
+    searchQuery: filters.searchQuery,
+    price: filters.price,
+  };
+  const filtersPd = {
+    sortBy: filters.sortBy,
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -56,7 +64,7 @@ function HomePage() {
           mt: 2,
         }}
       >
-        <BreadCrumbs breadcrumb={breadcrumbsHomePage}/>
+        <BreadCrumbs breadcrumb={breadcrumbsHomePage} />
         <FormProvider methods={methods}>
           <Stack
             spacing={2}
@@ -101,7 +109,7 @@ function HomePage() {
                   {error ? (
                     <Alert severity="error">{error}</Alert>
                   ) : (
-                    <ProductList filters={filters} />
+                    <ProductList filters={filtersApi} filtersPd={filtersPd} />
                   )}
                 </>
               </Box>

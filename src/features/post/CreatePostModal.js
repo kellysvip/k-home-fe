@@ -13,10 +13,9 @@ import { Stack } from "@mui/system";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { createPost, getPosts } from "./postSlice";
+import { createPost } from "./postSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { fData } from "../../utils/numberFormat";
-import { useState } from "react";
 
 const postSchema = Yup.object().shape({
   title: Yup.string().required("Content is required"),
@@ -71,8 +70,7 @@ export default function BasicModal({ open, setOpen }) {
   const handleClose = () => setOpen(false);
   const defaultValues = {
     title: "",
-    address: "district1",
-    description: "",
+    address: "District 1",
   };
   const methods = useForm({ resolver: yupResolver(postSchema), defaultValues });
   const {
@@ -80,7 +78,7 @@ export default function BasicModal({ open, setOpen }) {
     setValue,
     setError,
     reset,
-    formState: { errors, isSubmitting },
+    formState: {  isSubmitting },
   } = methods;
 
   const onSubmit = async (data) => {
@@ -111,18 +109,6 @@ export default function BasicModal({ open, setOpen }) {
         );
       }
 
-      // console.log("acceptedFiles", acceptedFiles);
-      // let files = [];
-      // acceptedFiles.forEach((file, index) => {
-      //   files.push(
-      //     Object.assign(file, {
-      //       preview: URL.createObjectURL(file),
-      //     })
-      //   );
-      // });
-      // console.log(files);
-      // if (files) setValue("image", ...files);
-      // setImage(files)
     },
     [setValue]
   );
@@ -134,9 +120,10 @@ export default function BasicModal({ open, setOpen }) {
       s
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      sx={{ overflow: "scroll"}}
     >
       <Box sx={style}>
-        <Typography variant="h5" component="h2">
+        <Typography variant="h5" component="h2" sx={{mt: {md: 0, xs: 3}}}>
           Infomation of Your Accomodation
         </Typography>
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>

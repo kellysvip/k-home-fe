@@ -5,3 +5,10 @@
     padding: 15px 20px;
     display: flex;
   }
+
+  @media screen and (max-width:768px) {
+    .main__chatbody {
+      display: flex;
+      flex-direction: column;
+    }
+}

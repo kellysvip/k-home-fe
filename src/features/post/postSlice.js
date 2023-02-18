@@ -50,9 +50,11 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = null;
       const { countPosts, posts } = action.payload;
+      state.currentPagePost=[]
+
       posts.forEach((post) => {
         state.postsById[post._id] = post;
-        if (!state.currentPagePost.includes(post._id))
+        // if (!state.currentPagePost.includes(post._id))
           state.currentPagePost.push(post._id);
       });
       state.totalPosts = countPosts;
@@ -61,6 +63,7 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = null;
       const { countPostOfUser, posts } = action.payload;
+      
       posts.forEach((post) => {
         state.postsById[post._id] = post;
         if (!state.currentPagePost.includes(post._id))
@@ -72,7 +75,7 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = null;
       const { post } = action.payload;
-      state.products = post;
+      state.product = post;
     },
 
     sendPostReactionSuccess(state, action) {
@@ -177,8 +180,9 @@ export const getPosts =
     dispatch(slice.actions.startLoading());
     try {
       let url = `/posts?page=${page}&limit=${limit}`;
-      url += filters.searchQuery ? `&title=${filters.searchQuery}` : "";
-      url += filters.address ? `&address=${filters.address}` : "";
+      url += filters?.searchQuery ? `&title=${filters.searchQuery}` : "";
+      url += filters?.address ? `&address=${filters.address}` : "";
+      url += filters?.price ? `&price=${filters.price}` : "";
       const response = await apiService.get(url);
       if (page === 1) dispatch(slice.actions.resetPosts());
       dispatch(slice.actions.getPostSuccess(response.data.data));
@@ -216,27 +220,5 @@ export const getPostsOfUser =
       toast.error(error.message);
     }
   };
-
-// export const sendPostReaction =
-//   ({ postId, emoji }) =>
-//   async (dispatch) => {
-//     dispatch(slice.actions.startLoading());
-//     try {
-//       const response = await apiService.post(`/reactions`, {
-//         targetType: "Post",
-//         targetId: postId,
-//         emoji,
-//       });
-//       dispatch(
-//         slice.actions.sendPostReactionSuccess({
-//           postId,
-//           reactions: response.data,
-//         })
-//       );
-//     } catch (error) {
-//       dispatch(slice.actions.hasError(error.message));
-//       toast.error(error.message);
-//     }
-//   };
 
 export default slice.reducer;

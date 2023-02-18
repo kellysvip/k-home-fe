@@ -44,7 +44,7 @@ const BookmarkPage = () => {
           <>
             <div className="row-propert">
               {bookmarks?.map((bookmark) => (
-                <PropertBookmarkCard bookmark={bookmark.postId} />
+                <PropertBookmarkCard key={bookmark.postId} bookmark={bookmark.postId} />
               ))}
             </div>
           </>

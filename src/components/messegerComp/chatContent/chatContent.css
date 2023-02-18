@@ -72,7 +72,9 @@
   padding: 15px;
   border-radius: 10px 10px 0 10px;
   max-width: 50%;
-  min-width: 215px;
+  min-width: fit-content;
+  overflow: hidden;
+
 }
 .chat__item__content .chat__meta {
   justify-content: space-between;
@@ -149,4 +151,15 @@
 #sendMsgBtn {
   background-color: #3b5bfe;
   color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+  .main__chatcontent {
+    max-width: 100%;
+  }
+
+  .chat__item__content {
+    max-width: 25%;
+    min-width: 130px;
+  }
 }

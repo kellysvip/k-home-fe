@@ -84,7 +84,6 @@ function ProductCard({ product }) {
   const handleOpenMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const renderMenu = (
     <Menu
       id="menu-appbar"
@@ -181,7 +180,7 @@ function ProductCard({ product }) {
                 >
                   {product.title}
                 </Typography>
-                {user._id === product.author && (
+                {user._id === product.author._id && (
                   <IconButton
                     onClick={handleOpenMenu}
                     sx={{ height: "50px", top: "-5px" }}

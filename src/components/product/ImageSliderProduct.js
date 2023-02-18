@@ -1,15 +1,14 @@
-import { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-const slideStyles = {
-  width: "100px",
-  height: "100%",
-  borderRadius: "10px",
-  backgroundSize: "cover",
-  backgroundPosition: "center",
+// const slideStyles = {
+//   width: "100px",
+//   height: "100%",
+//   borderRadius: "10px",
+//   backgroundSize: "cover",
+//   backgroundPosition: "center",
   
-};
+// };
 
 const rightArrowStyles = {
   position: "absolute",
@@ -63,10 +62,12 @@ const sliders = [
 ];
 
 const ImageSliderProduct = () => {
-  const { products } = useSelector((state) => state.post);
-  console.log("products", products);
-  const slides = products ? products.imageUrl : sliders;
+  const { product } = useSelector((state) => state.post);
+  const slides = product ? product.imageUrl : sliders;
   const [currentIndex, setCurrentIndex] = useState(0);
+  
+  
+
   const goToPrevious = () => {
     const isFirstSlide = currentIndex === 0;
     const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
@@ -80,12 +81,7 @@ const ImageSliderProduct = () => {
   const goToSlide = (slideIndex) => {
     setCurrentIndex(slideIndex);
   };
-  const slideStylesWidthBackground = slides
-    ? {
-        ...slideStyles,
-        backgroundImage: `url(${slides[currentIndex]})`,
-      }
-    : slideStyles;
+  
 
   return (
     <div style={sliderStyles}>

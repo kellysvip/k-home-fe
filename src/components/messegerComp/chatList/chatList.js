@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, {  useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getConversations } from "../../../features/conversation/conversationSlice";
 import { getMessages } from "../../../features/message/messageSlice";
@@ -16,7 +16,7 @@ const ChatList = () => {
 
   const { conversation } = useSelector((state) => state.conversation);
   const handleOpenConversation = (conversationId) => {
-    console.log(conversationId);
+    console.log(conversation);
     dispatch(getMessages({ conversationId }));
   };
 
@@ -45,7 +45,8 @@ const ChatList = () => {
         </div>
       </div>
       <div className="chatlist__items">
-        {conversation?.map((conv, index) => (
+        {conversation?.map((conv, index) => {
+          return (
           <div onClick={() => handleOpenConversation(conv._id)}>
             <ChatListItems
               name={
@@ -64,7 +65,7 @@ const ChatList = () => {
               }
             />
           </div>
-        ))}
+        )})}
       </div>
     </div>
   );

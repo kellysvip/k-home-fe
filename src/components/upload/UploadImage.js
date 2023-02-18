@@ -22,8 +22,8 @@ const DropZoneStyle = styled("div")(({ theme }) => ({
 function UploadImage({ error, file, fileArray, helperText, sx, ...other }) {
   console.log("fileArray", fileArray);
   const imgBox = fileArray?.map((file) => (
-    
     <Box
+      key={file}
       sx={{
         top: 8,
         left: 8,
@@ -107,7 +107,7 @@ function UploadImage({ error, file, fileArray, helperText, sx, ...other }) {
             />
           </Box>
         )} */}
-        {imgBox }
+        {imgBox}
       </DropZoneStyle>
 
       {fileRejections.length > 0 && (

@@ -1,4 +1,4 @@
-import React, { Component, useState, createRef, useEffect } from "react";
+import React, { useState, createRef } from "react";
 
 import "./chatContent.css";
 import Avatar from "../chatList/Avatar";
@@ -6,14 +6,16 @@ import ChatItem from "./chatItems";
 import { useDispatch, useSelector } from "react-redux";
 import useAuth from "../../../hooks/useAuth";
 import { addMessage } from "../../../features/message/messageSlice";
-import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
-import SendIcon from '@mui/icons-material/Send';
+import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
+import SendIcon from "@mui/icons-material/Send";
+import { Typography } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 const ChatContent = () => {
   const { user } = useAuth();
   const [mess, setMess] = useState("");
   const messagesEndRef = createRef(null);
   const dispatch = useDispatch();
-  const { currentPageMessage, messagesById,convId } = useSelector(
+  const { currentPageMessage, messagesById, conversationInfo } = useSelector(
     (state) => state.message
   );
   const messages = currentPageMessage.map(
@@ -28,39 +30,38 @@ const ChatContent = () => {
   //   };
   // }
 
-  const scrollToBottom = () => {
-    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-  };
+  // const scrollToBottom = () => {
+  //   messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  // };
 
-  function componentDidMount() {
-    // window.addEventListener("keydown", (e) => {
-    //   if (e.keyCode == 13) {
-    //     if (state.msg != "") {
-    //       chatItms.push({
-    //         key: 1,
-    //         type: "",
-    //         msg: state.msg,
-    //         image:
-    //           "https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg",
-    //       });
-    //       setState({ chat: [...chatItms] });
-    //       scrollToBottom();
-    //       setState({ msg: "" });
-    //     }
-    //   }
-    // });
-    scrollToBottom();
-  }
+  // function componentDidMount() {
+  //   // window.addEventListener("keydown", (e) => {
+  //   //   if (e.keyCode == 13) {
+  //   //     if (state.msg != "") {
+  //   //       chatItms.push({
+  //   //         key: 1,
+  //   //         type: "",
+  //   //         msg: state.msg,
+  //   //         image:
+  //   //           "https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg",
+  //   //       });
+  //   //       setState({ chat: [...chatItms] });
+  //   //       scrollToBottom();
+  //   //       setState({ msg: "" });
+  //   //     }
+  //   //   }
+  //   // });
+  //   scrollToBottom();
+  // }
   const onStateChange = (e) => {
-    // setState({ msg: e.target.value });
     setMess(e.target.value);
   };
 
   const handleSendMessage = async () => {
-    if (mess ==="") return
+    if (mess === "") return;
     try {
       const messageData = {
-        conversationId: convId,
+        conversationId: conversationInfo._id,
         senderId: user._id,
         text: mess,
       };
@@ -75,16 +76,45 @@ const ChatContent = () => {
     <div className="main__chatcontent">
       <div className="content__header">
         <div className="blocks">
-          <div className="current-chatting-user">
-            <Avatar
-            className="current-chatting-avt"
-              isOnline="active"
-              image="https://images.unsplash.com/photo-1671726805228-dc54c08408ef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxzZWFyY2h8MXx8aG9tZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-            />
-            <p>User</p>
-          </div>
+          {conversationInfo ? (
+            <div className="current-chatting-user">
+              <Avatar
+                className="current-chatting-avt"
+                isOnline="active"
+                image={
+                  conversationInfo?.members[0]._id === user._id
+                    ? conversationInfo.members[1].avatarUrl
+                    : conversationInfo.members[0].avatarUrl
+                }
+              />
+              <p>
+                {conversationInfo?.members[0]._id === user._id
+                  ? conversationInfo.members[1].name
+                  : conversationInfo.members[0].name}
+              </p>
+            </div>
+          ) : (
+            <Typography
+              sx={{
+                fontSize: "30px",
+                opacity: "0.5",
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              {" "}
+              <AddIcon
+                fontSize="large"
+                sx={{
+                  display: "flex",
+                  alignSelf: "center",
+                  flexDirection: "row",
+                }}
+              />
+              Choose a new conversation
+            </Typography>
+          )}
         </div>
-
         <div className="blocks">
           <div className="settings">
             <button className="btn-nobg">
@@ -101,8 +131,11 @@ const ChatContent = () => {
               key={index}
               user={message?.senderId === user._id ? "me" : "other"}
               msg={message?.text}
+              createdAt={message?.createdAt}
               image={
-                "https://res.cloudinary.com/dq8f0rpf1/image/upload/v1675273106/37d0d0f8369d408eb609d99a68273218_hmiinh.jpg"
+                conversationInfo?.members[0]._id === user._id
+                  ? conversationInfo?.members[0].avatarUrl
+                  : conversationInfo?.members[1].avatarUrl
               }
             />
           ))}
@@ -110,13 +143,13 @@ const ChatContent = () => {
           <div ref={messagesEndRef} />
         </div>
       </div>
-      <div className="content__footer">
+     {conversationInfo ? <div className="content__footer">
         <div className="sendNewMessage">
-          <button className="addFiles" >
-            <AddToPhotosIcon/>
+          <button className="addFiles">
+            <AddToPhotosIcon />
           </button>
           <input
-            type="text"
+            
             placeholder="Type a message here"
             onChange={onStateChange}
             value={mess}
@@ -126,10 +159,10 @@ const ChatContent = () => {
             className="btnSendMsg"
             id="sendMsgBtn"
           >
-            <SendIcon/>
+            <SendIcon />
           </button>
         </div>
-      </div>
+      </div>: ""} 
     </div>
   );
 };

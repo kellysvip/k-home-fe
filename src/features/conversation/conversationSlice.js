@@ -26,10 +26,13 @@ const slice = createSlice({
       state.error = null;
       const { newConversation } = action.payload;
       state.conversation.push(newConversation) ;
+      console.log("conversation", state.conversation )
+
+      console.log("newConversation", newConversation )
       state.convInfo = {
         conversationId: newConversation._id,
-        senderId: newConversation.members[0],
-        receiverId: newConversation.members[1],
+        senderId: newConversation.members[0]._id,
+        receiverId: newConversation.members[1]._id,
       };
     },
     resetConversations(state) {

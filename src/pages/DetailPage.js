@@ -1,7 +1,5 @@
-import { ThemeProvider } from "@emotion/react";
 import {
   Box,
-  CardMedia,
   Container,
   createTheme,
   Link,
@@ -21,21 +19,17 @@ import { useParams } from "react-router-dom";
 import BreadCrumbs from "../components/BreadCrumbs";
 import SimpleMap from "../components/Map";
 import ImageSliderProduct from "../components/product/ImageSliderProduct";
-import { getSinglePost } from "../features/post/postSlice";
+import { getPosts, getSinglePost } from "../features/post/postSlice";
 import PostSlider from "../features/post/PostSlider";
 import UserInfoCard from "../features/users/UserInfoCard";
 import useWindowSize from "../hooks/useWindowSize";
-const theme = createTheme();
+
+
 const breadcrumbsHomePage = [
   <Link underline="hover" key="1" color="inherit" href="/landingpage">
     K-HOME
   </Link>,
-  <Link
-    underline="hover"
-    key="2"
-    color="inherit"
-    href="/"
-  >
+  <Link underline="hover" key="2" color="inherit" href="/">
     Home
   </Link>,
   <Typography key="3" color="text.primary">
@@ -43,22 +37,25 @@ const breadcrumbsHomePage = [
   </Typography>,
 ];
 
-
 function DetailPage() {
   const { _id } = useParams();
   const size = useWindowSize();
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state.post);
+  const { product, currentPagePost, postsById } = useSelector(
+    (state) => state.post
+  );
+  const products = currentPagePost.map((postId) => postsById[postId]);
   useEffect(() => {
     dispatch(getSinglePost({ _id }));
+    dispatch(getPosts({}));
   }, [_id, dispatch]);
-  
+
   return (
-    <ThemeProvider theme={theme}>
       <Container
         sx={{
           display: "flex",
-          flexDirection: "column",mt: 2,
+          flexDirection: "column",
+          mt: 2,
         }}
       >
         <BreadCrumbs breadcrumb={breadcrumbsHomePage} />
@@ -79,10 +76,8 @@ function DetailPage() {
           >
             <Stack sx={{ maxWidth: "700px", overflow: "hidden" }}>
               <Box sx={{ position: "relative" }}>
-                
-                <ImageSliderProduct/>
+                <ImageSliderProduct />
               </Box>
-             
               <Box sx={{ position: "relative", mt: 1 }}>
                 <Typography
                   gutterBottom
@@ -90,18 +85,18 @@ function DetailPage() {
                   component="div"
                   sx={{ overflowY: "hidden", fontWeight: "bold" }}
                 >
-                  {products?.title}
+                  {product?.title}
                 </Typography>
                 <Typography
                   variant="subtitle1"
                   sx={{ color: "#657786", overflow: "hidden" }}
                 >
-                  {products?.address}
+                  {product?.address}
                 </Typography>
                 <Typography
                   sx={{ color: "#0499a8", fontWeight: "700", fontSize: "38px" }}
                 >
-                  {products?.price} Triệu
+                  {product?.price} Triệu
                 </Typography>
               </Box>
               <Box sx={{ position: "relative", mt: 3 }}>
@@ -132,18 +127,18 @@ function DetailPage() {
                         }}
                       >
                         <TableCell component="th" scope="row" align="center">
-                          {products?.status}
+                          {product?.status}
                         </TableCell>
                         <TableCell align="center">
-                          {products?.updatedAt}
+                          {product?.updatedAt}
                         </TableCell>
-                        <TableCell align="center">{products?.area}</TableCell>
+                        <TableCell align="center">{product?.area}</TableCell>
 
                         <TableCell align="center">
-                          {products?.noBedroom}
+                          {product?.noBedroom}
                         </TableCell>
                         <TableCell align="center">
-                          {products?.noBathroom}
+                          {product?.noBathroom}
                         </TableCell>
                       </TableRow>
                     </TableBody>
@@ -157,31 +152,27 @@ function DetailPage() {
                   Description
                 </Typography>
                 <Typography sx={{ mt: "2px", mb: 2 }}>
-                  {products?.description}
+                  {product?.description}
                 </Typography>
-                <SimpleMap position={products?.address} />
+                <SimpleMap position={product?.address} />
                 {size.width < 900 && (
-                  <UserInfoCard
-                    profile={products?.author}
-                    products={products}
-                  />
+                  <UserInfoCard profile={product?.author} products={product} />
                 )}
               </Box>{" "}
-              <PostSlider />
+              <PostSlider products={products} />
             </Stack>
           </Paper>
 
           {size.width >= 900 && (
             <div>
               <UserInfoCard
-                profile={products?.author}
-                productId={products?._id}
+                profile={product?.author}
+                productId={product?._id}
               />
             </div>
           )}
         </Stack>
       </Container>
-    </ThemeProvider>
   );
 }
 
