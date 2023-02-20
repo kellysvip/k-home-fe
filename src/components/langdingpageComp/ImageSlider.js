@@ -46,7 +46,6 @@ const dotStyle = {
   cursor: "pointer",
   fontSize: "20px",
 };
-
 const ImageSlider = ({ slides }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const goToPrevious = () => {
@@ -66,13 +65,11 @@ const ImageSlider = ({ slides }) => {
     ...slideStyles,
     backgroundImage: `url(${slides[currentIndex].url})`,
   };
-  let i= 0
+  
   useEffect(() => {
     const timer = () => {
-        setInterval(() => {
-            
+        setInterval(() => {  
             goToNext()
-            setCurrentIndex((i <= slides.length - 1) ? i++ : i=0);
         }, 3000)
     }
     timer()

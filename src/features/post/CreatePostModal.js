@@ -16,7 +16,8 @@ import { useDispatch } from "react-redux";
 import { createPost } from "./postSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { fData } from "../../utils/numberFormat";
-
+import { IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 const postSchema = Yup.object().shape({
   title: Yup.string().required("Content is required"),
   address: Yup.string().required("Address is required"),
@@ -78,7 +79,7 @@ export default function BasicModal({ open, setOpen }) {
     setValue,
     setError,
     reset,
-    formState: {  isSubmitting },
+    formState: { isSubmitting },
   } = methods;
 
   const onSubmit = async (data) => {
@@ -104,11 +105,10 @@ export default function BasicModal({ open, setOpen }) {
         setValue(
           "image",
           acceptedFiles.map((file) => {
-            return Object.assign(file, { preview: URL.createObjectURL(file) })
+            return Object.assign(file, { preview: URL.createObjectURL(file) });
           })
         );
       }
-
     },
     [setValue]
   );
@@ -120,12 +120,17 @@ export default function BasicModal({ open, setOpen }) {
       s
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
-      sx={{ overflow: "scroll"}}
+      sx={{ overflow: "scroll" }}
     >
       <Box sx={style}>
-        <Typography variant="h5" component="h2" sx={{mt: {md: 0, xs: 3}}}>
-          Infomation of Your Accomodation
-        </Typography>
+        <Box sx={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+          <Typography variant="h5" component="h2" sx={{ mt: { md: 0, xs: 3 } }}>
+            Infomation of Your Accomodation
+          </Typography>
+          <IconButton onClick={handleClose} >
+            <CloseIcon fontSize="large"/>
+          </IconButton>
+        </Box>
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <FTextField name="title" label="Title" />
           <Stack sx={{ mt: 1, flexDirection: { md: "row", sm: "column" } }}>

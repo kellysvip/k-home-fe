@@ -1,6 +1,7 @@
 .home {
     display: flex;
     background-color: #e9f0fe;
+    transition: background-color 0.5s ease;
     .homeContainer {
       flex: 6;
   

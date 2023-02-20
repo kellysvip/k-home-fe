@@ -60,7 +60,7 @@ export const addBookmark =
   };
 
 export const getBookmark =
-  ({}) =>
+  () =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {

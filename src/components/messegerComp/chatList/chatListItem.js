@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Avatar from "./Avatar";
 const ChatListItems = ({ name, animationDelay, active, isOnline, image }) => {
   const selectChat = (e) => {

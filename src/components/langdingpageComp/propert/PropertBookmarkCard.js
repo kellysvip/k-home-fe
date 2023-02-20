@@ -15,7 +15,8 @@ const PropertBookmarkCard = ({ bookmark }) => {
             <img src={bookmark.imageUrl[0]} alt="" />
           </div>
           <div className="property-content">
-            <h3>{bookmark.title}</h3>
+          <div className="property-content-title">
+            <h3>{bookmark.title}</h3></div>
             <div className="mark-propert">
               {/* <i className="fa-solid fa-location-dot"></i>{" "} */}
               <span>{bookmark.address}</span>

@@ -19,6 +19,7 @@ import ProductList from "../features/post/ProductList";
 import ProductAddressSort from "../components/product/ProductAddressSort";
 import ProductPriceSort from "../components/product/ProductPriceSort";
 import BreadCrumbs from "../components/BreadCrumbs";
+import edited from "../components/edited.png"
 
 const theme = createTheme();
 
@@ -95,7 +96,7 @@ function HomePage() {
             >
               <Stack sx={{ width: 300 }}>
                 <img
-                  src="https://cdn.mogi.vn/banner/2022/2_0bf5f0d6-91c3-457e-b1fa-6d8f70cd823f.png"
+                  src={edited}
                   alt=""
                 />
               </Stack>

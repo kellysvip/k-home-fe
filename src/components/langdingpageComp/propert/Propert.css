@@ -58,6 +58,8 @@
   width: 350px;
   vertical-align: middle;
   transition: 0.3s;
+  max-height: 262.11px;
+  min-height: 262.11px;
 }
 
 .single-property:hover .property-thumb img {
@@ -75,6 +77,9 @@
   color: #001d38;
   font-weight: 700;
   font-family: "Poppins", sans-serif;
+  
+  max-height: 36px;
+  overflow: hidden;
 }
 
 .mark-propert span {
@@ -164,6 +169,7 @@
   }
   .property-thumb img {
     width: 500px;
+    max-height: 400px;
   }
   .property-content {
     padding: 15px;
@@ -179,6 +185,7 @@
   }
   .property-thumb img {
     width: 450px;
+    max-height: 400px;
   }
   .column-propert {
     padding-bottom: 1rem;
@@ -193,6 +200,7 @@
   }
   .property-thumb img {
     width: 400px;
+    max-height: 400px;
   }
   .more-property .property-btn {
     padding: 12px 25px;
@@ -206,6 +214,7 @@
   }
   .property-thumb img {
     width: 350px;
+    max-height: 400px;
   }
   .column-propert {
     padding-left: 15px;
@@ -225,6 +234,7 @@
   }
   .property-thumb img {
     width: 300px;
+    max-height: 400px;
   }
   .column-propert {
     padding-left: 12px;
