@@ -27,6 +27,8 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { LoadingButton } from "@mui/lab";
+import AlertMsg from "../components/AlertMsg";
+import { toast } from "react-toastify";
 
 const RegisterSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -101,10 +103,13 @@ export default function RegisterPage() {
       setError("responseError", error);
     }
   };
+  const handleClick = () => {
+    toast.success("Feature is being worked on");
+  };
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
+      <Grid container component="main" sx={{ height: "100vh" }}><AlertMsg/>
         <CssBaseline />
 
         <Grid
@@ -216,13 +221,13 @@ export default function RegisterPage() {
               <HorizontalLine />
               <Stack justifyContent="space-evenly" direction="row">
                 <IconButton color="primary" size="large">
-                  <GoogleIcon />
+                  <GoogleIcon onClick={handleClick}/>
                 </IconButton>
                 <IconButton color="primary" size="large">
-                  <FacebookIcon />
+                  <FacebookIcon onClick={handleClick}/>
                 </IconButton>
                 <IconButton color="primary" size="large">
-                  <InstagramIcon />
+                  <InstagramIcon onClick={handleClick}/>
                 </IconButton>
               </Stack>
               <Copyright />

@@ -27,6 +27,8 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { LoadingButton } from "@mui/lab";
+import { toast } from "react-toastify";
+import AlertMsg from "../components/AlertMsg";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email().required("Email is required"),
@@ -82,7 +84,7 @@ export default function LoginPage() {
   const onSubmit = async (data) => {
     const from = location.state?.from?.pathname || "/";
     let { email, password } = data;
-    
+
     try {
       await auth.login({ email, password }, () => {
         navigate(from, { replace: true });
@@ -94,9 +96,14 @@ export default function LoginPage() {
     }
   };
 
+  const handleClick = () => {
+    toast.success("Feature is being worked on");
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
+        <AlertMsg />
         <CssBaseline />
         <Grid
           item
@@ -177,8 +184,12 @@ export default function LoginPage() {
 
                 <Grid container>
                   <Grid item xs>
-                    <Typography textAlign="left" variant="body2">
-                      <Link href="/register">Forgot password</Link>
+                    <Typography
+                      textAlign="left"
+                      variant="body2"
+                      onClick={handleClick}
+                    >
+                      <Link href="#">Forgot password</Link>
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -191,13 +202,13 @@ export default function LoginPage() {
                 <HorizontalLine />
                 <Stack justifyContent="space-evenly" direction="row">
                   <IconButton color="primary" size="large">
-                    <GoogleIcon />
+                    <GoogleIcon onClick={handleClick} />
                   </IconButton>
                   <IconButton color="primary" size="large">
-                    <FacebookIcon />
+                    <FacebookIcon onClick={handleClick} />
                   </IconButton>
                   <IconButton color="primary" size="large">
-                    <InstagramIcon />
+                    <InstagramIcon onClick={handleClick} />
                   </IconButton>
                 </Stack>
                 <Copyright />

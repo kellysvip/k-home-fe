@@ -1,5 +1,5 @@
 import React from "react";
-import AboutUs from "../components/langdingpageComp/AboutUs/AboutUs";
+// import AboutUs from "../components/langdingpageComp/AboutUs/AboutUs";
 import ContactUs from "../components/langdingpageComp/ContactUs/ContactUs";
 import ImageSlider from "../components/langdingpageComp/ImageSlider";
 import Introduce from "../components/langdingpageComp/Introduce/Introduce";
@@ -42,7 +42,7 @@ const LandingPage = () => {
       <div style={containerStyles}>
         <ImageSlider slides={slides} />
       </div>
-      <AboutUs />
+      {/* <AboutUs /> */}
       <Propert/>
       <Testimonial/>
     <ContactUs/>

@@ -29,7 +29,7 @@ const testimonials = [
 ];
 const TestimonialSectionStyles = styled.div`
   overflow-x: hidden;
-  padding: 10rem 0;
+  padding: 3rem 0;
   text-align: center;
   background: #fff;
   .testimonial__wrapper {
@@ -42,7 +42,7 @@ const TestimonialSectionStyles = styled.div`
     height: fit-content;
     background-color: var(--deep-dark);
     border-radius: 12px;
-    margin-top: 5rem;
+    margin-top: 3rem;
   }
   .testimonial__desc {
     .para {
@@ -50,7 +50,7 @@ const TestimonialSectionStyles = styled.div`
     }
   }
   .testimonial__name {
-    margin-top: 4rem;
+    margin-top: 2rem;
     font-family: "Montserrat Bold";
     font-size: 2.2rem;
   }

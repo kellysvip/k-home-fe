@@ -20,7 +20,7 @@ import useAuth from "../../hooks/useAuth";
 import { Box } from "@mui/system";
 import ChangeProductModal from "./ChangeProductModal";
 import { useDispatch } from "react-redux";
-import { deletePost } from "./postSlice";
+import { deletePost, getPosts, getPostsOfUser } from "./postSlice";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { green, red, yellow } from "@mui/material/colors";
 import useWindowSize from "../../hooks/useWindowSize";
@@ -75,6 +75,8 @@ function ProductCard({ product }) {
   };
   const handleDeletePost = () => {
     dispatch(deletePost({ postId }));
+    dispatch(getPostsOfUser({ userId: user._id }));
+
     handleClose();
   };
 
@@ -144,8 +146,7 @@ function ProductCard({ product }) {
       <Card sx={{ maxHeight: "227px", flexGrow: 1 }}>
         <CardActionArea>
           <Stack direction="row">
-            <Box
-            >
+            <Box>
               <CardMedia
                 component="img"
                 image={product.imageUrl[0]}
@@ -183,7 +184,12 @@ function ProductCard({ product }) {
                 {user._id === product.author._id && (
                   <IconButton
                     onClick={handleOpenMenu}
-                    sx={{ height: "50px", top: "-5px" }}
+                    sx={{
+                      height: "50px",
+                      position: "absolute",
+                      top: "10px",
+                      right: "5px",
+                    }}
                   >
                     <MoreVertIcon fontSize="large" />
                   </IconButton>
@@ -215,7 +221,7 @@ function ProductCard({ product }) {
 
                 <Stack flexDirection="row">
                   <Typography variant="subtitle1">
-                    {moment(product?.updatedAt).format('DD/MM/YYYY') }
+                    {moment(product?.updatedAt).format("DD/MM/YYYY")}
                   </Typography>
                   {product.status === "available"
                     ? size.width >= 430 && (
@@ -227,6 +233,8 @@ function ProductCard({ product }) {
                             ml: 3,
                             backgroundColor: "primary.main",
                             fontSize: "13px",
+                            position: "absolute",
+                            right: "25px",
                           }}
                         >
                           Available
@@ -242,6 +250,8 @@ function ProductCard({ product }) {
                             ml: 3,
                             backgroundColor: "secondary.main",
                             fontSize: "13px",
+                            position: "absolute",
+                            right: "25px",
                           }}
                         >
                           Reserve
@@ -256,6 +266,8 @@ function ProductCard({ product }) {
                             ml: 3,
                             backgroundColor: "third.main",
                             fontSize: "13px",
+                            position: "absolute",
+                            right: "25px",
                           }}
                         >
                           Rented

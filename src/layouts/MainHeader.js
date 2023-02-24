@@ -20,6 +20,7 @@ import { createTheme, Link } from "@mui/material";
 import CreatePostModal from "../features/post/CreatePostModal";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import useWindowSize from "../hooks/useWindowSize";
+import { toast } from "react-toastify";
 
 let theme = createTheme({
   palette: {
@@ -48,6 +49,7 @@ function MainHeader() {
   };
 
   const handleCloseNavMenu = () => {
+    toast.success("Feature is being worked on");
     setAnchorElNav(null);
   };
   const handleCloseUserMenu = () => {

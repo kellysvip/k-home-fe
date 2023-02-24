@@ -12,9 +12,10 @@ import { Stack } from "@mui/system";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { changePost } from "./postSlice";
+import { changePost, getPosts, getPostsOfUser } from "./postSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { fData } from "../../utils/numberFormat";
+import useAuth from "../../hooks/useAuth";
 
 const postSchema = Yup.object().shape({
   title: Yup.string(),
@@ -66,6 +67,7 @@ const statusList = [
 ];
 
 export default function ChangeProductModal({ product }) {
+  const { user } = useAuth();
   const dispatch = useDispatch();
   const productId = product._id;
   const defaultValues = {
@@ -91,6 +93,7 @@ export default function ChangeProductModal({ product }) {
   const onSubmitChangePost = async (data) => {
     try {
       dispatch(changePost(productId, data));
+      dispatch(getPostsOfUser({ userId: user._id }));
     } catch (error) {
       reset();
       console.log(error);

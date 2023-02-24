@@ -1,6 +1,11 @@
 import React, { Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Propert.css";
 const Propert = () => {
+  const navigate = useNavigate();
+  const handleChangePage = () => {
+    navigate("/");
+  };
   return (
     <Fragment>
       <section className="property">
@@ -8,7 +13,7 @@ const Propert = () => {
           <h3>Popular Properties</h3>
         </div>
         <div className="row-propert">
-          <div className="column-propert">
+          <div className="column-propert" onClick={handleChangePage}>
             <div className="single-property">
               <div className="card-propert">
                 <div className="property-thumb">
@@ -50,7 +55,7 @@ const Propert = () => {
               </div>
             </div>
           </div>
-          <div className="column-propert">
+          <div className="column-propert" onClick={handleChangePage}>
             <div className="single-property">
               <div className="card-propert">
                 <div className="property-thumb">
@@ -91,7 +96,7 @@ const Propert = () => {
               </div>
             </div>
           </div>
-          <div className="column-propert">
+          <div className="column-propert" onClick={handleChangePage}>
             <div className="single-property">
               <div className="card-propert">
                 <div className="property-thumb">
@@ -135,7 +140,10 @@ const Propert = () => {
         </div>
         <div className="more-property">
           <a className="property-bt" href="/">
-            <button className="property-btn"> More Property</button>
+            <button className="property-btn" onClick={handleChangePage}>
+              {" "}
+              More Property
+            </button>
           </a>
         </div>
       </section>

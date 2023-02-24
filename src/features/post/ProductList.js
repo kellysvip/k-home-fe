@@ -12,7 +12,7 @@ function ProductList({ filters, filtersPd }) {
   const { currentPagePost, postsById, totalPosts } = useSelector(
     (state) => state.post
   );
-
+  console.log("totalPosts", totalPosts);
   const products = currentPagePost.map((postId) => postsById[postId]);
   const filterProducts = applyFilter(products, filtersPd);
   const handleChangePage = (event, newPage) => {
@@ -39,12 +39,13 @@ function ProductList({ filters, filtersPd }) {
           <PaginationCustom
             page={page}
             handleChangePage={handleChangePage}
-            count={Math.ceil(totalPosts / 10) - 2}
+            count={Math.ceil(totalPosts / 10)}
           />
         </>
       ) : (
         <>
-          <Typography>No results were found</Typography><PaginationCustom
+          <Typography>No results were found</Typography>
+          <PaginationCustom
             page={page}
             handleChangePage={handleChangePage}
             count={Math.ceil(totalPosts / 10) - 2}
