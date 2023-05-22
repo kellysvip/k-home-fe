@@ -1,0 +1,14 @@
+.main__chatbody {
+    flex-grow: 1;
+    background-color: #f4f3f8;
+    border-radius: 10px;
+    padding: 15px 20px;
+    display: flex;
+  }
+
+  @media screen and (max-width:768px) {
+    .main__chatbody {
+      display: flex;
+      flex-direction: column;
+    }
+}
